@@ -1,8 +1,7 @@
 #pragma once
 #include "array"
+#include "Define.h"
 #include "GF256.h"
-
-#define SBoxSize 256
 
 using namespace std;
 using namespace GF256;
@@ -17,5 +16,5 @@ namespace Utility
 	
 	array<byte, SBoxSize> BuildSBox();
 	array<byte, SBoxSize> InverseSBox(array<byte, SBoxSize> SBox);
-	array<array<byte, 4>, 10> BuildRcon();
+	array<array<byte, WordSize>, RconSize> BuildRcon();
 }

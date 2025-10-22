@@ -34,7 +34,7 @@ namespace AESTest
 
 		TEST_METHOD(Test_BuildRcon)
 		{
-			array<array<byte, 4>, 10> Rcon = BuildRcon();
+			array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
 			Assert::AreEqual(unsigned char(Rcon[1 - 1][0]), unsigned char(0x01));
 			Assert::AreEqual(unsigned char(Rcon[5 - 1][3]), unsigned char(0x00));
 			Assert::AreEqual(unsigned char(Rcon[9 - 1][0]), unsigned char(0x1b));
