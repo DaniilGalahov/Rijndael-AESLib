@@ -2,24 +2,24 @@
 
 namespace GF256
 {
-	char ClampToByte(char c);
+	unsigned char ClampToByte(unsigned char c);
 	
 	class byte
 	{
 	private:
-		char value = 0x00;
+		unsigned char value = 0x00;
 
 	public:
-		byte(char c);
+		byte(unsigned char c);
 		byte(int i);
 		byte();
-		operator char() const;
+		operator unsigned char() const;
 		operator int() const;
 		bool operator == (byte other) const;
-		bool operator == (char other) const;
+		bool operator == (unsigned char other) const;
 		bool operator == (int other) const;
 		bool operator != (byte other) const;
-		bool operator != (char other) const;
+		bool operator != (unsigned char other) const;
 		bool operator != (int other) const;
 		byte operator+ (byte other) const;
 		byte operator& (byte other) const;

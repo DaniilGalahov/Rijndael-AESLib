@@ -1,30 +1,30 @@
 #include "GF256.h"
 
-char GF256::ClampToByte(char c)
+unsigned char GF256::ClampToByte(unsigned char c)
 {
 	return c & 0xff;
 }
 
-GF256::byte::byte(char c)
+GF256::byte::byte(unsigned char c)
 {
 	value = GF256::ClampToByte(c);
 }
 
 GF256::byte::byte(int i)
-	:byte(char(i)) {}
+	:byte(unsigned char(i)) {}
 
 GF256::byte::byte()
 	:byte(0x00) {}
 
 
-GF256::byte::operator char() const
+GF256::byte::operator unsigned char() const
 {
 	return value;
 }
 
 GF256::byte::operator int() const
 {
-	return int(operator char());
+	return int(operator unsigned char());
 }
 
 bool GF256::byte::operator==(byte other) const
@@ -35,14 +35,14 @@ bool GF256::byte::operator==(byte other) const
 		return false;
 }
 
-bool GF256::byte::operator==(char other) const
+bool GF256::byte::operator==(unsigned char other) const
 {
 	return operator==(byte(other));
 }
 
 bool GF256::byte::operator==(int other) const
 {
-	return operator==(char(other));
+	return operator==(unsigned char(other));
 }
 
 bool GF256::byte::operator!=(byte other) const
@@ -50,14 +50,14 @@ bool GF256::byte::operator!=(byte other) const
 	return !(operator==(other));
 }
 
-bool GF256::byte::operator!=(char other) const
+bool GF256::byte::operator!=(unsigned char other) const
 {
 	return operator!=(byte(other));
 }
 
 bool GF256::byte::operator!=(int other) const
 {
-	return operator!=(char(other));
+	return operator!=(unsigned char(other));
 }
 
 GF256::byte GF256::byte::operator+(byte other) const
