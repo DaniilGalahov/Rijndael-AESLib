@@ -18,7 +18,10 @@
     <ClCompile Include="AESTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CF256Test.cpp">
+    <ClCompile Include="GF256Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilityTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

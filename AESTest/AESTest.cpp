@@ -8,8 +8,9 @@ namespace AESTest
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(Test_Sanity)
 		{
+			Assert::IsTrue(true);
 		}
 	};
 }
