@@ -160,7 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AESTest.cpp" />
-    <ClCompile Include="CF28Test.cpp" />
+    <ClCompile Include="CF256Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AESLib\AESLib.vcxproj">

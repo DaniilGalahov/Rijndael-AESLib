@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GF28.h">
+    <ClInclude Include="GF256.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -23,7 +23,7 @@
     <ClCompile Include="AESLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GF28.cpp">
+    <ClCompile Include="GF256.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

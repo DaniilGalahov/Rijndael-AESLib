@@ -139,11 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GF28.h" />
+    <ClInclude Include="GF256.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AESLib.cpp" />
-    <ClCompile Include="GF28.cpp" />
+    <ClCompile Include="GF256.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
