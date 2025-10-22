@@ -17,8 +17,7 @@ array<byte, SBoxSize> Utility::BuildSBox()
 	array<byte, SBoxSize> SBox;
 	for (int a = 0; a < SBoxSize; a++)
 	{
-		unsigned char x = unsigned char(int(byte(a).Inversed()));
-		SBox[a] = byte((char)AffineTransform(x));
+		SBox[a] = byte(AffineTransform(byte(a).Inversed()));
 	}
 	return SBox;
 }
@@ -28,7 +27,7 @@ array<byte, SBoxSize> Utility::InverseSBox(array<byte, SBoxSize> SBox)
 	array<byte, SBoxSize> InvSBox;
 	for (int a = 0; a < SBoxSize; a++)
 	{
-		InvSBox[int(SBox[a])] = byte(a);
+		InvSBox[(int)SBox[a]] = byte(a);
 	}
 	return InvSBox;
 }
