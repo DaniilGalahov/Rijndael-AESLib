@@ -129,3 +129,56 @@ array<array<byte, StateCol>, StateRow> AES::Cipher(array<array<byte, StateCol>, 
 	state = AddRoundKey(state, w, Nr);
 	return state;
 }
+
+array<array<byte, StateCol>, StateRow> AES::InvMixColumns(array<array<byte, StateCol>, StateRow> state)
+{
+	array<array<byte, StateCol>, StateRow> invertedMixedState = array<array<byte, StateCol>, StateRow>();
+	for (int c = 0; c < StateCol; c++)
+	{
+		invertedMixedState[0][c] = (byte(0x0e) * state[0][c]) + (byte(0x0b) * state[1][c]) + (byte(0x0d) * state[2][c]) + (byte(0x09) * state[3][c]);
+		invertedMixedState[1][c] = (byte(0x09) * state[0][c]) + (byte(0x0e) * state[1][c]) + (byte(0x0b) * state[2][c]) + (byte(0x0d) * state[3][c]);
+		invertedMixedState[2][c] = (byte(0x0d) * state[0][c]) + (byte(0x09) * state[1][c]) + (byte(0x0e) * state[2][c]) + (byte(0x0b) * state[3][c]);
+		invertedMixedState[3][c] = (byte(0x0b) * state[0][c]) + (byte(0x0d) * state[1][c]) + (byte(0x09) * state[2][c]) + (byte(0x0e) * state[3][c]);
+	}
+	return invertedMixedState;
+}
+
+vector<array<byte, WordSize>> AES::KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk, int Nr)
+{
+	vector<array<byte, WordSize>> w = vector<array<byte, WordSize>>((4 * Nr) + 3 + 1);
+	vector<array<byte, WordSize>> dw = vector<array<byte, WordSize>>((4 * Nr) + 3 + 1);
+	int i = 0;
+	while (i <= (Nk - 1))
+	{
+		for (int j = 0; j < WordSize; j++)
+		{
+			w[i][j] = key[(WordSize * i) + j];
+			dw[i][j] = w[i][j];
+		}
+		i++;
+	}
+	while (i <= (4 * Nr) + 3)
+	{
+		array<byte, WordSize> temp = w[i - 1];
+		if (i % Nk == 0)
+		{
+			temp = SubWord(RotWord(temp), SBox);
+			for (int j = 0; j < WordSize; j++)
+			{
+				temp[j] = temp[j] + Rcon[int(i / Nk)][j];
+			}
+		}
+		else if ((Nk > 6) && (i % Nk == 4))
+		{
+			temp = SubWord(temp, SBox);
+		}
+		for (int j = 0; j < WordSize; j++)
+		{
+			w[i][j] = w[i - Nk][j] + temp[j];
+			dw[i][j] = w[i][j];
+		}
+		i++;
+	}
+	//TODO: add foe cycle here (after adding InvMixColumns)
+	return dw;
+}

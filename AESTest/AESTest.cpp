@@ -117,5 +117,16 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0x85), unsigned char(state[2][2]));
 			Assert::AreEqual(unsigned char(0x32), unsigned char(state[3][3]));
 		}
+
+		TEST_METHOD(Test_InvMixColumns)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> mixedState = MixColumns(state);
+			array<array<byte, StateCol>, StateRow> invertedMixedState = InvMixColumns(mixedState);
+			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(invertedMixedState[0][0]));
+			Assert::AreEqual(unsigned char(state[1][1]), unsigned char(invertedMixedState[1][1]));
+			Assert::AreEqual(unsigned char(state[2][2]), unsigned char(invertedMixedState[2][2]));
+			Assert::AreEqual(unsigned char(state[3][3]), unsigned char(invertedMixedState[3][3]));
+		}
 	};
 }
