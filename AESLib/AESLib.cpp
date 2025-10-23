@@ -22,7 +22,7 @@ bool AESLib::PKCS7::RemovePad(vector<unsigned char>& data)
 	{
 		return false;
 	}
-	for (size_t i = 0; i< size_t(pad); ++i)
+	for (size_t i = 0; i < size_t(pad); ++i)
 	{
 		if (data[data.size() - 1 - i] != pad)
 		{
@@ -30,4 +30,24 @@ bool AESLib::PKCS7::RemovePad(vector<unsigned char>& data)
 		}
 	}
 	data.resize(data.size() - pad);
+}
+
+vector<unsigned char> AESLib::Auxilliary::DeriveKey(vector<unsigned char>& userKey, size_t keySize)
+{
+	vector<unsigned char> derivedKey = vector<unsigned char>(keySize, 0x00);
+	array<byte, SBoxSize> SBox = BuildSBox();
+	int i = 0;
+	while (i < keySize)
+	{
+		if (i < userKey.size())
+		{
+			derivedKey[i] = userKey[i];
+		}
+		else
+		{
+			derivedKey[i] = SBox[i];
+		}
+		i++;
+	}
+	return derivedKey;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "vector"
+#include "array"
 #include "Utility.h"
 #include "AES.h"
 
@@ -14,6 +15,11 @@ namespace AESLib
 		void AddPad(vector<unsigned char>& data);
 		bool RemovePad(vector<unsigned char>& data);
 	}
+
+	namespace Auxilliary
+	{
+		vector<unsigned char> DeriveKey(vector<unsigned char>& userKey, size_t keySize); //TODO: change function to usage SHA256 hash for key
+	}
 	
 	enum Mode
 	{
@@ -22,6 +28,6 @@ namespace AESLib
 		AES256
 	};
 
-	//vector<unsigned char> Encrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode);
-	//vector<unsigned char> Decrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode);
+	vector<unsigned char> Encrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode);
+	vector<unsigned char> Decrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode);
 }

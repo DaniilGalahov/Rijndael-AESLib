@@ -33,5 +33,17 @@ namespace AESTest
 			Assert::AreEqual(5, (int)data.size());
 			Assert::AreEqual(unsigned char('O'), data[4]);
 		}
+
+		TEST_METHOD(Test_DeriveKey)
+		{
+			using namespace AESLib::Auxilliary;
+			vector<unsigned char> userKey = vector<unsigned char>{ 'H','E','L','L','O' };
+			vector<unsigned char> test = vector<unsigned char>{ 0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x6d, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76 };
+			vector<unsigned char> derivedKey = DeriveKey(userKey,16);
+			Assert::AreEqual(16, (int)derivedKey.size());
+			Assert::AreEqual(test[0], derivedKey[0]);
+			Assert::AreEqual(test[7], derivedKey[7]);
+			Assert::AreEqual(test[15], derivedKey[15]);
+		}
 	};
 }
