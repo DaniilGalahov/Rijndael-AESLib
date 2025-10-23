@@ -14,6 +14,8 @@ namespace AES
 	namespace Auxilliary
 	{
 		array<array<byte, WordSize>, StateRow> RoundKey(vector<array<byte, WordSize>> w, int round);  //TODO: works correct, add tests
+		array<array<byte, StateCol>, StateRow> WordsToState(vector<array<byte, WordSize>> words);  //TODO: works correct, add tests
+		vector<array<byte, WordSize>> StateToWords(array<array<byte, StateCol>, StateRow> state);  //TODO: works correct, add tests
 	}
 
 	array<byte, WordSize> RotWord(array<byte, WordSize> a);
