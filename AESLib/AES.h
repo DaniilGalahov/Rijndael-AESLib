@@ -22,5 +22,6 @@ namespace AES
 	array<array<byte, StateCol>, StateRow> SubBytes(array<array<byte, StateCol>, StateRow> state, array<byte, SBoxSize> SBox);
 	array<array<byte, StateCol>, StateRow> ShiftRows(array<array<byte, StateCol>, StateRow> state);
 	array<array<byte, StateCol>, StateRow> MixColumns(array<array<byte, StateCol>, StateRow> state);
-	array<array<byte, StateCol>, StateRow> AddRoundKey(array<array<byte, StateCol>, StateRow> state, vector<array<byte, WordSize>> &w, int round);
+	array<array<byte, StateCol>, StateRow> AddRoundKey(array<array<byte, StateCol>, StateRow> state, vector<array<byte, WordSize>> w, int round);
+	array<array<byte, StateCol>, StateRow> Cipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> w, array<byte, SBoxSize> SBox);
 }

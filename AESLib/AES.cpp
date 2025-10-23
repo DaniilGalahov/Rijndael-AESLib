@@ -98,7 +98,7 @@ array<array<byte, StateCol>, StateRow> AES::MixColumns(array<array<byte, StateCo
 	return mixedState;
 }
 
-array<array<byte, StateCol>, StateRow> AES::AddRoundKey(array<array<byte, StateCol>, StateRow> state, vector<array<byte, WordSize>> &w, int round)
+array<array<byte, StateCol>, StateRow> AES::AddRoundKey(array<array<byte, StateCol>, StateRow> state, vector<array<byte, WordSize>> w, int round)
 {
 	using namespace Auxilliary;
 	array<array<byte, WordSize>, StateRow> roundKey = RoundKey(w, round);
@@ -111,4 +111,21 @@ array<array<byte, StateCol>, StateRow> AES::AddRoundKey(array<array<byte, StateC
 		}
 	}
 	return stateWithKey;
+}
+
+array<array<byte, StateCol>, StateRow> AES::Cipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> w, array<byte, SBoxSize> SBox)
+{
+	array<array<byte, StateCol>, StateRow> state = in;
+	state = AddRoundKey(state, w, 0);
+	for (int round = 1; round <= Nr - 1; round++)
+	{
+		state = SubBytes(state,SBox);
+		state = ShiftRows(state);
+		state = MixColumns(state);
+		state = AddRoundKey(state, w, round);
+	}
+	state = SubBytes(state, SBox);
+	state = ShiftRows(state);
+	state = AddRoundKey(state, w, Nr);
+	return state;
 }

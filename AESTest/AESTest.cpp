@@ -102,5 +102,20 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0x8d), unsigned char(stateWithKey[2][2]));
 			Assert::AreEqual(unsigned char(0x08), unsigned char(stateWithKey[3][3]));
 		}
+
+		TEST_METHOD(Test_Cipher)
+		{
+			int Nk = 4;
+			int Nr = 10;
+			array<array<byte, StateCol>, StateRow> in = InputToState(Example::input);
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
+			vector<array<byte, WordSize>> w = KeyExpansion(Example::key128, SBox, Rcon, Nk, Nr);
+			array<array<byte, StateCol>, StateRow> state = Cipher(in, Nr, w, SBox);
+			Assert::AreEqual(unsigned char(0x39), unsigned char(state[0][0]));
+			Assert::AreEqual(unsigned char(0xdc), unsigned char(state[1][1]));
+			Assert::AreEqual(unsigned char(0x85), unsigned char(state[2][2]));
+			Assert::AreEqual(unsigned char(0x32), unsigned char(state[3][3]));
+		}
 	};
 }
