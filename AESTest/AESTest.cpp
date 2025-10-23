@@ -168,7 +168,6 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(in[3][3]), unsigned char(state[3][3]));
 		}
 
-		/*
 		TEST_METHOD(Test_KeyExpansionEIC)
 		{
 			array<byte, SBoxSize> SBox = BuildSBox();
@@ -180,10 +179,10 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0x15), unsigned char(dw[0][2]));
 			Assert::AreEqual(unsigned char(0x16), unsigned char(dw[0][3]));
 
-			Assert::AreEqual(unsigned char(0xe9), unsigned char(dw[23][0]));
-			Assert::AreEqual(unsigned char(0xfd), unsigned char(dw[23][1]));
-			Assert::AreEqual(unsigned char(0xb9), unsigned char(dw[23][2]));
-			Assert::AreEqual(unsigned char(0x72), unsigned char(dw[23][3]));
+			Assert::AreEqual(unsigned char(0xb5), unsigned char(dw[23][0]));
+			Assert::AreEqual(unsigned char(0x4a), unsigned char(dw[23][1]));
+			Assert::AreEqual(unsigned char(0x33), unsigned char(dw[23][2]));
+			Assert::AreEqual(unsigned char(0x8d), unsigned char(dw[23][3]));
 
 			Assert::AreEqual(unsigned char(0xb6), unsigned char(dw[43][0]));
 			Assert::AreEqual(unsigned char(0x63), unsigned char(dw[43][1]));
@@ -208,6 +207,5 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(in[2][2]), unsigned char(state[2][2]));
 			Assert::AreEqual(unsigned char(in[3][3]), unsigned char(state[3][3]));
 		}
-		*/
 	};
 }

@@ -13,7 +13,6 @@ array<array<byte, WordSize>, StateRow> AES::Auxilliary::RoundKey(vector<array<by
 	return roundKey;
 }
 
-/*
 array<array<byte, StateCol>, StateRow> AES::Auxilliary::WordsToState(vector<array<byte, WordSize>> words)
 {
 	array<array<byte, StateCol>, StateRow> state = array<array<byte, StateCol>, StateRow>();
@@ -21,7 +20,7 @@ array<array<byte, StateCol>, StateRow> AES::Auxilliary::WordsToState(vector<arra
 	{
 		for (int c = 0; c < StateCol; c++)
 		{
-			state[r][c] = words[r][c];
+			state[c][r] = words[r][c];
 		}
 	}
 	return state;
@@ -34,12 +33,11 @@ vector<array<byte, WordSize>> AES::Auxilliary::StateToWords(array<array<byte, St
 	{
 		for (int c = 0; c < WordSize; c++)
 		{
-			words[r][c] = state[r][c];
+			words[r][c] = state[c][r];
 		}
 	}
 	return words;
 }
-*/
 
 array<byte, WordSize> AES::RotWord(array<byte, WordSize> a)
 {
@@ -219,47 +217,13 @@ array<array<byte, StateCol>, StateRow> AES::InvCipher(array<array<byte, StateCol
 	return state;
 }
 
-/*
 vector<array<byte, WordSize>> AES::KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk, int Nr)
 {
 	using namespace Auxilliary;
-	vector<array<byte, WordSize>> w = vector<array<byte, WordSize>>((4 * Nr) + 3 + 1);
-	vector<array<byte, WordSize>> dw = vector<array<byte, WordSize>>(w.capacity());
-	int i = 0;
-	while (i <= (Nk - 1))
-	{
-		for (int j = 0; j < WordSize; j++)
-		{
-			w[i][j] = key[(WordSize * i) + j];
-		}
-		dw[i] = w[i];
-		i++;
-	}
-	while (i <= (4 * Nr) + 3)
-	{
-		array<byte, WordSize> temp = w[i - 1];
-		if (i % Nk == 0)
-		{
-			temp = SubWord(RotWord(temp), SBox);
-			for (int j = 0; j < WordSize; j++)
-			{
-				temp[j] = temp[j] + Rcon[int(i / Nk)][j];
-			}
-		}
-		else if ((Nk > 6) && (i % Nk == 4))
-		{
-			temp = SubWord(temp, SBox);
-		}
-		for (int j = 0; j < WordSize; j++)
-		{
-			w[i][j] = w[i - Nk][j] + temp[j];
-		}
-		dw[i] = w[i];
-		i++;
-	}
+	vector<array<byte, WordSize>> dw = KeyExpansion(key, SBox, Rcon, Nk, Nr);
 	for (int round = 1; round <= Nr - 1; round++)
 	{
-		i = 4 * round;
+		int i = 4 * round;
 		vector<array<byte, WordSize>> words = vector<array<byte, WordSize>>(StateRow);
 		for (int j = 0; j < StateRow; j++)
 		{
@@ -290,4 +254,3 @@ array<array<byte, StateCol>, StateRow> AES::EqInvCipher(array<array<byte, StateC
 	state = AddRoundKey(state, dw, 0);
 	return state;
 }
-*/
