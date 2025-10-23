@@ -58,3 +58,16 @@ array<array<byte, StateCol>, StateRow> AES::SubBytes(array<array<byte, StateCol>
 	}
 	return subState;
 }
+
+array<array<byte, StateCol>, StateRow> AES::ShiftRows(array<array<byte, StateCol>, StateRow> state)
+{
+	array<array<byte, StateCol>, StateRow> shiftedState = array<array<byte, StateCol>, StateRow>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			shiftedState[r][c] = state[r][(c+r)%4];
+		}
+	}
+	return shiftedState;
+}

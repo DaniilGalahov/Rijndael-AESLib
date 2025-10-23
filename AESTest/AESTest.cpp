@@ -70,5 +70,15 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0x9a), unsigned char(subState[1][3]));
 			Assert::AreEqual(unsigned char(0x18), unsigned char(subState[3][3]));
 		}
+
+		TEST_METHOD(Test_ShiftRows)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> shiftedState = ShiftRows(state);
+			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(shiftedState[0][0]));
+			Assert::AreEqual(unsigned char(state[1][0]), unsigned char(shiftedState[1][3]));
+			Assert::AreEqual(unsigned char(state[2][0]), unsigned char(shiftedState[2][2]));
+			Assert::AreEqual(unsigned char(state[3][0]), unsigned char(shiftedState[3][1]));
+		}
 	};
 }
