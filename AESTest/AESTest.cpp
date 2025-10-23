@@ -80,5 +80,27 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(state[2][0]), unsigned char(shiftedState[2][2]));
 			Assert::AreEqual(unsigned char(state[3][0]), unsigned char(shiftedState[3][1]));
 		}
+
+		TEST_METHOD(Test_MixColumns)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> mixedState = MixColumns(state);
+			Assert::AreEqual(unsigned char(0xff), unsigned char(mixedState[0][0]));
+			Assert::AreEqual(unsigned char(0xb3), unsigned char(mixedState[1][3]));
+			Assert::AreEqual(unsigned char(0x63), unsigned char(mixedState[3][3]));
+		}
+
+		TEST_METHOD(Test_AddRoundKey)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
+			vector<array<byte, WordSize>> w = KeyExpansion(Example::key128, SBox, Rcon);
+			array<array<byte, StateCol>, StateRow> stateWithKey = AddRoundKey(state, w, 0);
+			Assert::AreEqual(unsigned char(0x19), unsigned char(stateWithKey[0][0]));
+			Assert::AreEqual(unsigned char(0xf4), unsigned char(stateWithKey[1][1]));
+			Assert::AreEqual(unsigned char(0x8d), unsigned char(stateWithKey[2][2]));
+			Assert::AreEqual(unsigned char(0x08), unsigned char(stateWithKey[3][3]));
+		}
 	};
 }

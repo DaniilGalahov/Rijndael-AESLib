@@ -1,5 +1,18 @@
 #include "AES.h"
 
+array<array<byte, WordSize>, StateRow> AES::Auxilliary::RoundKey(vector<array<byte, WordSize>> w, int round)
+{
+	array<array<byte, WordSize>, StateRow> roundKey = array<array<byte, WordSize>, StateRow>();
+	for (int i = 0; i < StateRow; i++)
+	{
+		for (int j = 0; j < WordSize;j++)
+		{
+			roundKey[j][i] = w[(4*round)+i][j];
+		}
+	}
+	return roundKey;
+}
+
 array<byte, WordSize> AES::RotWord(array<byte, WordSize> a)
 {
 	return array<byte, WordSize> {a[1], a[2], a[3], a[0]};
@@ -70,4 +83,32 @@ array<array<byte, StateCol>, StateRow> AES::ShiftRows(array<array<byte, StateCol
 		}
 	}
 	return shiftedState;
+}
+
+array<array<byte, StateCol>, StateRow> AES::MixColumns(array<array<byte, StateCol>, StateRow> state)
+{
+	array<array<byte, StateCol>, StateRow> mixedState = array<array<byte, StateCol>, StateRow>();
+	for (int c = 0; c < StateCol; c++)
+	{
+		mixedState[0][c] = (byte(0x02) * state[0][c]) + (byte(0x03) * state[1][c]) + state[2][c] + state[3][c];
+		mixedState[1][c] = state[0][c] + (byte(0x02) * state[1][c]) + (byte(0x03) * state[2][c]) + state[3][c];
+		mixedState[2][c] = state[0][c] + state[1][c] + (byte(0x02) * state[2][c]) + (byte(0x03) * state[3][c]);
+		mixedState[3][c] = (byte(0x03) * state[0][c]) + state[1][c] + state[2][c] + (byte(0x02) * state[3][c]);
+	}
+	return mixedState;
+}
+
+array<array<byte, StateCol>, StateRow> AES::AddRoundKey(array<array<byte, StateCol>, StateRow> state, vector<array<byte, WordSize>> &w, int round)
+{
+	using namespace Auxilliary;
+	array<array<byte, WordSize>, StateRow> roundKey = RoundKey(w, round);
+	array<array<byte, StateCol>, StateRow> stateWithKey = array<array<byte, StateCol>, StateRow>();
+	for (int c = 0; c < StateCol; c++)
+	{
+		for (int r = 0; r < StateRow; r++)
+		{
+			stateWithKey[r][c] = state[r][c] + roundKey[r][c];
+		}
+	}
+	return stateWithKey;
 }

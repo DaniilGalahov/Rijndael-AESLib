@@ -10,8 +10,8 @@ namespace Utility
 {
 	namespace Auxilliary
 	{
-		unsigned char RotL8(unsigned char v, int r);
-		unsigned char AffineTransform(unsigned char x);
+		unsigned char RotL8(unsigned char v, int r); //TODO: works correct, add tests
+		unsigned char AffineTransform(unsigned char x);  //TODO: works correct, add tests
 	}
 	
 	array<byte, SBoxSize> BuildSBox();
