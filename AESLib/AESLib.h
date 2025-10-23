@@ -10,6 +10,13 @@ using namespace AES;
 
 namespace AESLib
 {
+	enum Mode
+	{
+		AES128,
+		AES192,
+		AES256
+	};
+
 	namespace PKCS7
 	{
 		void AddPad(vector<unsigned char>& data);
@@ -20,13 +27,14 @@ namespace AESLib
 	{
 		vector<unsigned char> DeriveKey(vector<unsigned char>& userKey, size_t keySize); //TODO: change function to usage SHA256 hash for key
 	}
-	
-	enum Mode
+
+	namespace Parameters
 	{
-		AES128,
-		AES192,
-		AES256
-	};
+		static int Nk = 4;
+		static int Nr = 10;
+		static int keySize = 16;
+		void Set(Mode mode);
+	}
 
 	vector<unsigned char> Encrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode);
 	vector<unsigned char> Decrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode);

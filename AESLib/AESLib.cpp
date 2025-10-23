@@ -30,6 +30,7 @@ bool AESLib::PKCS7::RemovePad(vector<unsigned char>& data)
 		}
 	}
 	data.resize(data.size() - pad);
+	return true;
 }
 
 vector<unsigned char> AESLib::Auxilliary::DeriveKey(vector<unsigned char>& userKey, size_t keySize)
@@ -50,4 +51,65 @@ vector<unsigned char> AESLib::Auxilliary::DeriveKey(vector<unsigned char>& userK
 		i++;
 	}
 	return derivedKey;
+}
+
+void AESLib::Parameters::Set(Mode mode)
+{
+	if (mode == Mode::AES192)
+	{
+		Nk = 6;
+		Nr = 12;
+		keySize = 24;
+	}
+
+	if (mode == Mode::AES256)
+	{
+		Nk = 8;
+		Nr = 14;
+		keySize = 32;
+	}
+}
+
+vector<unsigned char> AESLib::Encrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode)
+{
+	using namespace AESLib::PKCS7;
+	using namespace AESLib::Auxilliary;
+	using namespace AESLib::Parameters;
+
+	vector<unsigned char> output = vector<unsigned char>(data.size());
+
+	Set(mode);
+
+	array<byte, SBoxSize> SBox = BuildSBox();
+	array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
+
+	vector<unsigned char> charKey = DeriveKey(key,keySize);
+	vector<byte> byteKey = vector<byte>(charKey.size());
+	for (int i = 0; i < key.size(); i++)
+	{
+		byteKey[i] = charKey[i];
+	}
+	vector<array<byte, WordSize>> w = KeyExpansion(byteKey, SBox, Rcon, Nk, Nr);
+
+	AddPad(data);
+
+	for (int i = 0; i < data.size(); i = i + DataSize)
+	{
+		array<byte, DataSize> input = array<byte, DataSize>();
+		for (int j = 0; j < DataSize; j++)
+		{
+			input[j] = data[i + j];
+		}
+
+		array<array<byte, StateCol>, StateRow> in = InputToState(input);
+		array<array<byte, StateCol>, StateRow> state = Cipher(in, Nr, w, SBox);
+		array<byte, DataSize> out = StateToOutput(state);
+
+		for (int j = 0; j < DataSize; j++)
+		{
+			output[i + j] = out[j];
+		}
+	}
+
+	return output; //TODO: continue from here
 }
