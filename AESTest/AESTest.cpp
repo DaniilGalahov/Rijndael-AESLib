@@ -1,9 +1,11 @@
 #include "CppUnitTest.h"
 #include "AES.h"
+#include "Utility.h"
 #include "Example.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AES;
+using namespace Utility;
 
 namespace AESTest
 {
@@ -57,6 +59,16 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(w[43][1]), unsigned char(0x63));
 			Assert::AreEqual(unsigned char(w[43][2]), unsigned char(0x0c));
 			Assert::AreEqual(unsigned char(w[43][3]), unsigned char(0xa6));
+		}
+
+		TEST_METHOD(Test_SubBytes)
+		{
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> subState = SubBytes(state, SBox);
+			Assert::AreEqual(unsigned char(0x23), unsigned char(subState[0][0]));
+			Assert::AreEqual(unsigned char(0x9a), unsigned char(subState[1][3]));
+			Assert::AreEqual(unsigned char(0x18), unsigned char(subState[3][3]));
 		}
 	};
 }

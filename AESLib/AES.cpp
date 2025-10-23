@@ -45,3 +45,16 @@ vector<array<byte, WordSize>> AES::KeyExpansion(vector<byte> key, array<byte, SB
 	}
 	return w;
 }
+
+array<array<byte, StateCol>, StateRow> AES::SubBytes(array<array<byte, StateCol>, StateRow> state, array<byte, SBoxSize> SBox)
+{
+	array<array<byte, StateCol>, StateRow> subState = array<array<byte, StateCol>, StateRow>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			subState[r][c] = SBox[int(state[r][c])];
+		}
+	}
+	return subState;
+}
