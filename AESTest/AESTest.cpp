@@ -168,6 +168,7 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(in[3][3]), unsigned char(state[3][3]));
 		}
 
+		/*
 		TEST_METHOD(Test_KeyExpansionEIC)
 		{
 			array<byte, SBoxSize> SBox = BuildSBox();
@@ -190,7 +191,6 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0xa6), unsigned char(dw[43][3]));
 		}
 
-		/*
 		TEST_METHOD(Test_EqInvCipher)
 		{
 			int Nk = 4;

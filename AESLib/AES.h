@@ -14,8 +14,8 @@ namespace AES
 	namespace Auxilliary
 	{
 		array<array<byte, WordSize>, StateRow> RoundKey(vector<array<byte, WordSize>> w, int round);  //TODO: works correct, add tests
-		array<array<byte, StateCol>, StateRow> WordsToState(vector<array<byte, WordSize>> words);  //TODO: works correct, add tests
-		vector<array<byte, WordSize>> StateToWords(array<array<byte, StateCol>, StateRow> state);  //TODO: works correct, add tests
+		//array<array<byte, StateCol>, StateRow> WordsToState(vector<array<byte, WordSize>> words);
+		//vector<array<byte, WordSize>> StateToWords(array<array<byte, StateCol>, StateRow> state);
 	}
 
 	array<byte, WordSize> RotWord(array<byte, WordSize> a);
@@ -30,6 +30,6 @@ namespace AES
 	array<array<byte, StateCol>, StateRow> InvSubBytes(array<array<byte, StateCol>, StateRow> state, array<byte, SBoxSize> InvSBox);
 	array<array<byte, StateCol>, StateRow> InvMixColumns(array<array<byte, StateCol>, StateRow> state);
 	array<array<byte, StateCol>, StateRow> InvCipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> w, array<byte, SBoxSize> InvSBox);
-	vector<array<byte, WordSize>> KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk = 4, int Nr = 10);
-	array<array<byte, StateCol>, StateRow> EqInvCipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> dw, array<byte, SBoxSize> SBox);
+	//vector<array<byte, WordSize>> KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk = 4, int Nr = 10);
+	//array<array<byte, StateCol>, StateRow> EqInvCipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> dw, array<byte, SBoxSize> SBox);
 }

@@ -13,6 +13,7 @@ array<array<byte, WordSize>, StateRow> AES::Auxilliary::RoundKey(vector<array<by
 	return roundKey;
 }
 
+/*
 array<array<byte, StateCol>, StateRow> AES::Auxilliary::WordsToState(vector<array<byte, WordSize>> words)
 {
 	array<array<byte, StateCol>, StateRow> state = array<array<byte, StateCol>, StateRow>();
@@ -38,6 +39,7 @@ vector<array<byte, WordSize>> AES::Auxilliary::StateToWords(array<array<byte, St
 	}
 	return words;
 }
+*/
 
 array<byte, WordSize> AES::RotWord(array<byte, WordSize> a)
 {
@@ -217,6 +219,7 @@ array<array<byte, StateCol>, StateRow> AES::InvCipher(array<array<byte, StateCol
 	return state;
 }
 
+/*
 vector<array<byte, WordSize>> AES::KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk, int Nr)
 {
 	using namespace Auxilliary;
@@ -287,3 +290,4 @@ array<array<byte, StateCol>, StateRow> AES::EqInvCipher(array<array<byte, StateC
 	state = AddRoundKey(state, dw, 0);
 	return state;
 }
+*/
