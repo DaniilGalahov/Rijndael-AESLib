@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AESLibTest.cpp" />
     <ClCompile Include="AESTest.cpp" />
     <ClCompile Include="GF256Test.cpp" />
     <ClCompile Include="UtilityTest.cpp" />
