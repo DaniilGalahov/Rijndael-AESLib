@@ -150,5 +150,27 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0x0c), unsigned char(dw[43][2]));
 			Assert::AreEqual(unsigned char(0xa6), unsigned char(dw[43][3]));
 		}
+
+		TEST_METHOD(Test_InvShiftRows)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> invertedShiftedState = InvShiftRows(state);
+			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(invertedShiftedState[0][0]));
+			Assert::AreEqual(unsigned char(state[1][0]), unsigned char(invertedShiftedState[1][1]));
+			Assert::AreEqual(unsigned char(state[2][0]), unsigned char(invertedShiftedState[2][2]));
+			Assert::AreEqual(unsigned char(state[3][0]), unsigned char(invertedShiftedState[3][3]));
+		}
+
+		TEST_METHOD(Test_InvSubBytes)
+		{
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<byte, SBoxSize> InvSBox = InverseSBox(SBox);
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> subState = SubBytes(state, SBox);
+			array<array<byte, StateCol>, StateRow> invSubState = InvSubBytes(subState, InvSBox);
+			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(invSubState[0][0]));
+			Assert::AreEqual(unsigned char(state[1][3]), unsigned char(invSubState[1][3]));
+			Assert::AreEqual(unsigned char(state[3][3]), unsigned char(invSubState[3][3]));
+		}
 	};
 }

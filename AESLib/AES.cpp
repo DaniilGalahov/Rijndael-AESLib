@@ -222,3 +222,29 @@ vector<array<byte, WordSize>> AES::KeyExpansionEIC(vector<byte> key, array<byte,
 	}
 	return dw;
 }
+
+array<array<byte, StateCol>, StateRow> AES::InvShiftRows(array<array<byte, StateCol>, StateRow> state)
+{
+	array<array<byte, StateCol>, StateRow> invertedShiftedState = array<array<byte, StateCol>, StateRow>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			invertedShiftedState[r][c] = state[r][abs((c - r) % 4)];
+		}
+	}
+	return invertedShiftedState;
+}
+
+array<array<byte, StateCol>, StateRow> AES::InvSubBytes(array<array<byte, StateCol>, StateRow> state, array<byte, SBoxSize> InvSBox)
+{
+	array<array<byte, StateCol>, StateRow> invSubState = array<array<byte, StateCol>, StateRow>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			invSubState[r][c] = InvSBox[int(state[r][c])];
+		}
+	}
+	return invSubState;
+}
