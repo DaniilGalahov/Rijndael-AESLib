@@ -61,3 +61,16 @@ array<array<byte, StateCol>, StateRow> Utility::InputToState(array<byte, DataSiz
 	}
 	return state;
 }
+
+array<byte, DataSize> Utility::StateToOutput(array<array<byte, StateCol>, StateRow> state)
+{
+	array<byte, DataSize> output = array<byte, DataSize>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			output[r + (4 * c)] = state[r][c];
+		}
+	}
+	return output;
+}

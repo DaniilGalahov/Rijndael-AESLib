@@ -48,5 +48,14 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(Example::input[13]), unsigned char(state[1][3]));
 			Assert::AreEqual(unsigned char(Example::input[15]), unsigned char(state[3][3]));
 		}
+
+		TEST_METHOD(Test_StateToOutput)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<byte, DataSize> output = StateToOutput(state);
+			Assert::AreEqual(unsigned char(Example::input[0]), unsigned char(output[0]));
+			Assert::AreEqual(unsigned char(Example::input[13]), unsigned char(output[13]));
+			Assert::AreEqual(unsigned char(Example::input[15]), unsigned char(output[15]));
+		}
 	};
 }
