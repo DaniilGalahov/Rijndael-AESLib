@@ -1,5 +1,6 @@
 #include "CppUnitTest.h"
 #include "Utility.h"
+#include "Example.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Utility;
@@ -35,9 +36,17 @@ namespace AESTest
 		TEST_METHOD(Test_BuildRcon)
 		{
 			array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
-			Assert::AreEqual(unsigned char(Rcon[1][0]), unsigned char(0x01));
-			Assert::AreEqual(unsigned char(Rcon[5][3]), unsigned char(0x00));
-			Assert::AreEqual(unsigned char(Rcon[9][0]), unsigned char(0x1b));
+			Assert::AreEqual(unsigned char(0x01), unsigned char(Rcon[1][0]));
+			Assert::AreEqual(unsigned char(0x00), unsigned char(Rcon[5][3]));
+			Assert::AreEqual(unsigned char(0x1b), unsigned char(Rcon[9][0]));
+		}
+
+		TEST_METHOD(Test_InputToState)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			Assert::AreEqual(unsigned char(Example::input[0]), unsigned char(state[0][0]));
+			Assert::AreEqual(unsigned char(Example::input[13]), unsigned char(state[1][3]));
+			Assert::AreEqual(unsigned char(Example::input[15]), unsigned char(state[3][3]));
 		}
 	};
 }

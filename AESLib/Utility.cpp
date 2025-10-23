@@ -48,3 +48,16 @@ array<array<byte, WordSize>, RconSize> Utility::BuildRcon()
 	Rcon[10] = array<byte, WordSize> {0x36, 0x00, 0x00, 0x00};
 	return Rcon;
 }
+
+array<array<byte, StateCol>, StateRow> Utility::InputToState(array<byte, DataSize> input)
+{
+	array<array<byte, StateCol>, StateRow> state = array<array<byte, StateCol>, StateRow>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			state[r][c] = input[r+(4*c)];
+		}
+	}
+	return state;
+}

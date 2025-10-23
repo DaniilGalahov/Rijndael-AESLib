@@ -17,4 +17,5 @@ namespace Utility
 	array<byte, SBoxSize> BuildSBox();
 	array<byte, SBoxSize> InverseSBox(array<byte, SBoxSize> SBox);
 	array<array<byte, WordSize>, RconSize> BuildRcon();
+	array<array<byte, StateCol>, StateRow> InputToState(array<byte, DataSize> input);
 }
