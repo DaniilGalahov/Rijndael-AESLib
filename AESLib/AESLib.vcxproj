@@ -139,10 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AES.h" />
+    <ClInclude Include="Define.h" />
     <ClInclude Include="GF256.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AES.cpp" />
     <ClCompile Include="AESLib.cpp" />
     <ClCompile Include="GF256.cpp" />
     <ClCompile Include="Utility.cpp" />

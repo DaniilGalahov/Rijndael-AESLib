@@ -1,6 +1,9 @@
 #include "CppUnitTest.h"
+#include "AES.h"
+#include "Example.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace AES;
 
 namespace AESTest
 {
@@ -11,6 +14,49 @@ namespace AESTest
 		TEST_METHOD(Test_Sanity)
 		{
 			Assert::IsTrue(true);
+		}
+
+		TEST_METHOD(Test_RotWord)
+		{
+			array<byte, WordSize> w = array<byte, WordSize> {0x00, 0x01, 0x02, 0x03};
+			array<byte, WordSize> wr = RotWord(w);
+			Assert::AreEqual(unsigned char(wr[0]), unsigned char(0x01));
+			Assert::AreEqual(unsigned char(wr[1]), unsigned char(0x02));
+			Assert::AreEqual(unsigned char(wr[2]), unsigned char(0x03));
+			Assert::AreEqual(unsigned char(wr[3]), unsigned char(0x00));
+		}
+
+		TEST_METHOD(Test_SubWord)
+		{
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<byte, WordSize> w = array<byte, WordSize> {0x00, 0x01, 0x02, 0x03};
+			array<byte, WordSize> ws = SubWord(w, SBox);
+			Assert::AreEqual(unsigned char(ws[0]), unsigned char(0x63));
+			Assert::AreEqual(unsigned char(ws[1]), unsigned char(0x7c));
+			Assert::AreEqual(unsigned char(ws[2]), unsigned char(0x77));
+			Assert::AreEqual(unsigned char(ws[3]), unsigned char(0x7b));
+		}
+
+		TEST_METHOD(Test_KeyExpansion)
+		{
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
+			vector<array<byte, WordSize>> w = KeyExpansion(Example::key128, SBox, Rcon);
+			
+			Assert::AreEqual(unsigned char(w[0][0]), unsigned char(0x2b));
+			Assert::AreEqual(unsigned char(w[0][1]), unsigned char(0x7e));
+			Assert::AreEqual(unsigned char(w[0][2]), unsigned char(0x15));
+			Assert::AreEqual(unsigned char(w[0][3]), unsigned char(0x16));
+
+			Assert::AreEqual(unsigned char(w[23][0]), unsigned char(0x11));
+			Assert::AreEqual(unsigned char(w[23][1]), unsigned char(0xf9));
+			Assert::AreEqual(unsigned char(w[23][2]), unsigned char(0x15));
+			Assert::AreEqual(unsigned char(w[23][3]), unsigned char(0xbc));
+
+			Assert::AreEqual(unsigned char(w[43][0]), unsigned char(0xb6));
+			Assert::AreEqual(unsigned char(w[43][1]), unsigned char(0x63));
+			Assert::AreEqual(unsigned char(w[43][2]), unsigned char(0x0c));
+			Assert::AreEqual(unsigned char(w[43][3]), unsigned char(0xa6));
 		}
 	};
 }
