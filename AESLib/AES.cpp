@@ -156,6 +156,37 @@ array<array<byte, StateCol>, StateRow> AES::Cipher(array<array<byte, StateCol>, 
 	return state;
 }
 
+array<array<byte, StateCol>, StateRow> AES::InvShiftRows(array<array<byte, StateCol>, StateRow> state)
+{
+	array<array<byte, StateCol>, StateRow> invertedShiftedState = array<array<byte, StateCol>, StateRow>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			int offset = (c - r) % 4;
+			if (offset < 0)
+			{
+				offset = 4 + offset;
+			}
+			invertedShiftedState[r][c] = state[r][offset];
+		}
+	}
+	return invertedShiftedState;
+}
+
+array<array<byte, StateCol>, StateRow> AES::InvSubBytes(array<array<byte, StateCol>, StateRow> state, array<byte, SBoxSize> InvSBox)
+{
+	array<array<byte, StateCol>, StateRow> invSubState = array<array<byte, StateCol>, StateRow>();
+	for (int r = 0; r < StateRow; r++)
+	{
+		for (int c = 0; c < StateCol; c++)
+		{
+			invSubState[r][c] = InvSBox[int(state[r][c])];
+		}
+	}
+	return invSubState;
+}
+
 array<array<byte, StateCol>, StateRow> AES::InvMixColumns(array<array<byte, StateCol>, StateRow> state)
 {
 	array<array<byte, StateCol>, StateRow> invertedMixedState = array<array<byte, StateCol>, StateRow>();
@@ -167,6 +198,23 @@ array<array<byte, StateCol>, StateRow> AES::InvMixColumns(array<array<byte, Stat
 		invertedMixedState[3][c] = (byte(0x0b) * state[0][c]) + (byte(0x0d) * state[1][c]) + (byte(0x09) * state[2][c]) + (byte(0x0e) * state[3][c]);
 	}
 	return invertedMixedState;
+}
+
+array<array<byte, StateCol>, StateRow> AES::InvCipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> w, array<byte, SBoxSize> InvSBox)
+{
+	array<array<byte, StateCol>, StateRow> state = in;
+	state = AddRoundKey(state, w, Nr);
+	for (int round = Nr - 1; round >= 1; round--)
+	{
+		state = InvShiftRows(state);
+		state = InvSubBytes(state, InvSBox);
+		state = AddRoundKey(state, w, round);
+		state = InvMixColumns(state);
+	}
+	state = InvShiftRows(state);
+	state = InvSubBytes(state, InvSBox);
+	state = AddRoundKey(state, w, 0);
+	return state;
 }
 
 vector<array<byte, WordSize>> AES::KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk, int Nr)
@@ -223,28 +271,19 @@ vector<array<byte, WordSize>> AES::KeyExpansionEIC(vector<byte> key, array<byte,
 	return dw;
 }
 
-array<array<byte, StateCol>, StateRow> AES::InvShiftRows(array<array<byte, StateCol>, StateRow> state)
+array<array<byte, StateCol>, StateRow> AES::EqInvCipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> dw, array<byte, SBoxSize> InvSBox)
 {
-	array<array<byte, StateCol>, StateRow> invertedShiftedState = array<array<byte, StateCol>, StateRow>();
-	for (int r = 0; r < StateRow; r++)
+	array<array<byte, StateCol>, StateRow> state = in;
+	state = AddRoundKey(state, dw, Nr);
+	for (int round = Nr - 1; round >= 1; round--)
 	{
-		for (int c = 0; c < StateCol; c++)
-		{
-			invertedShiftedState[r][c] = state[r][abs((c - r) % 4)];
-		}
+		state = InvSubBytes(state, InvSBox);
+		state = InvShiftRows(state);
+		state = InvMixColumns(state);
+		state = AddRoundKey(state, dw, round);
 	}
-	return invertedShiftedState;
-}
-
-array<array<byte, StateCol>, StateRow> AES::InvSubBytes(array<array<byte, StateCol>, StateRow> state, array<byte, SBoxSize> InvSBox)
-{
-	array<array<byte, StateCol>, StateRow> invSubState = array<array<byte, StateCol>, StateRow>();
-	for (int r = 0; r < StateRow; r++)
-	{
-		for (int c = 0; c < StateCol; c++)
-		{
-			invSubState[r][c] = InvSBox[int(state[r][c])];
-		}
-	}
-	return invSubState;
+	state = InvSubBytes(state, InvSBox);
+	state = InvShiftRows(state);
+	state = AddRoundKey(state, dw, 0);
+	return state;
 }

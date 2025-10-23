@@ -118,6 +118,28 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0x32), unsigned char(state[3][3]));
 		}
 
+		TEST_METHOD(Test_InvShiftRows)
+		{
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> invertedShiftedState = InvShiftRows(state);
+			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(invertedShiftedState[0][0]));
+			Assert::AreEqual(unsigned char(state[1][0]), unsigned char(invertedShiftedState[1][1]));
+			Assert::AreEqual(unsigned char(state[2][0]), unsigned char(invertedShiftedState[2][2]));
+			Assert::AreEqual(unsigned char(state[3][0]), unsigned char(invertedShiftedState[3][3]));
+		}
+
+		TEST_METHOD(Test_InvSubBytes)
+		{
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<byte, SBoxSize> InvSBox = InverseSBox(SBox);
+			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
+			array<array<byte, StateCol>, StateRow> subState = SubBytes(state, SBox);
+			array<array<byte, StateCol>, StateRow> invSubState = InvSubBytes(subState, InvSBox);
+			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(invSubState[0][0]));
+			Assert::AreEqual(unsigned char(state[1][3]), unsigned char(invSubState[1][3]));
+			Assert::AreEqual(unsigned char(state[3][3]), unsigned char(invSubState[3][3]));
+		}
+
 		TEST_METHOD(Test_InvMixColumns)
 		{
 			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
@@ -127,6 +149,23 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(state[1][1]), unsigned char(invertedMixedState[1][1]));
 			Assert::AreEqual(unsigned char(state[2][2]), unsigned char(invertedMixedState[2][2]));
 			Assert::AreEqual(unsigned char(state[3][3]), unsigned char(invertedMixedState[3][3]));
+		}
+
+		TEST_METHOD(Test_InvCipher)
+		{
+			int Nk = 4;
+			int Nr = 10;
+			array<array<byte, StateCol>, StateRow> in = InputToState(Example::input);
+			array<byte, SBoxSize> SBox = BuildSBox();
+			array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
+			vector<array<byte, WordSize>> w = KeyExpansion(Example::key128, SBox, Rcon, Nk, Nr);
+			array<array<byte, StateCol>, StateRow> encrypted = Cipher(in, Nr, w, SBox);
+			array<byte, SBoxSize> InvSBox = InverseSBox(SBox);
+			array<array<byte, StateCol>, StateRow> state = InvCipher(encrypted, Nr, w, InvSBox);
+			Assert::AreEqual(unsigned char(in[0][0]), unsigned char(state[0][0]));
+			Assert::AreEqual(unsigned char(in[1][1]), unsigned char(state[1][1]));
+			Assert::AreEqual(unsigned char(in[2][2]), unsigned char(state[2][2]));
+			Assert::AreEqual(unsigned char(in[3][3]), unsigned char(state[3][3]));
 		}
 
 		TEST_METHOD(Test_KeyExpansionEIC)
@@ -151,26 +190,24 @@ namespace AESTest
 			Assert::AreEqual(unsigned char(0xa6), unsigned char(dw[43][3]));
 		}
 
-		TEST_METHOD(Test_InvShiftRows)
+		/*
+		TEST_METHOD(Test_EqInvCipher)
 		{
-			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
-			array<array<byte, StateCol>, StateRow> invertedShiftedState = InvShiftRows(state);
-			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(invertedShiftedState[0][0]));
-			Assert::AreEqual(unsigned char(state[1][0]), unsigned char(invertedShiftedState[1][1]));
-			Assert::AreEqual(unsigned char(state[2][0]), unsigned char(invertedShiftedState[2][2]));
-			Assert::AreEqual(unsigned char(state[3][0]), unsigned char(invertedShiftedState[3][3]));
-		}
-
-		TEST_METHOD(Test_InvSubBytes)
-		{
+			int Nk = 4;
+			int Nr = 10;
+			array<array<byte, StateCol>, StateRow> in = InputToState(Example::input);
 			array<byte, SBoxSize> SBox = BuildSBox();
+			array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
+			vector<array<byte, WordSize>> w = KeyExpansion(Example::key128, SBox, Rcon, Nk, Nr);
+			array<array<byte, StateCol>, StateRow> encrypted = Cipher(in, Nr, w, SBox);
 			array<byte, SBoxSize> InvSBox = InverseSBox(SBox);
-			array<array<byte, StateCol>, StateRow> state = InputToState(Example::input);
-			array<array<byte, StateCol>, StateRow> subState = SubBytes(state, SBox);
-			array<array<byte, StateCol>, StateRow> invSubState = InvSubBytes(subState, InvSBox);
-			Assert::AreEqual(unsigned char(state[0][0]), unsigned char(invSubState[0][0]));
-			Assert::AreEqual(unsigned char(state[1][3]), unsigned char(invSubState[1][3]));
-			Assert::AreEqual(unsigned char(state[3][3]), unsigned char(invSubState[3][3]));
+			vector<array<byte, WordSize>> dw = KeyExpansionEIC(Example::key128, SBox, Rcon, Nk, Nr);
+			array<array<byte, StateCol>, StateRow> state = EqInvCipher(encrypted, Nr, dw, InvSBox);
+			Assert::AreEqual(unsigned char(in[0][0]), unsigned char(state[0][0]));
+			Assert::AreEqual(unsigned char(in[1][1]), unsigned char(state[1][1]));
+			Assert::AreEqual(unsigned char(in[2][2]), unsigned char(state[2][2]));
+			Assert::AreEqual(unsigned char(in[3][3]), unsigned char(state[3][3]));
 		}
+		*/
 	};
 }

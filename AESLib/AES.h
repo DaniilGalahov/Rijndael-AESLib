@@ -26,8 +26,10 @@ namespace AES
 	array<array<byte, StateCol>, StateRow> MixColumns(array<array<byte, StateCol>, StateRow> state);
 	array<array<byte, StateCol>, StateRow> AddRoundKey(array<array<byte, StateCol>, StateRow> state, vector<array<byte, WordSize>> w, int round);
 	array<array<byte, StateCol>, StateRow> Cipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> w, array<byte, SBoxSize> SBox);
-	array<array<byte, StateCol>, StateRow> InvMixColumns(array<array<byte, StateCol>, StateRow> state);
-	vector<array<byte, WordSize>> KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk = 4, int Nr = 10);
 	array<array<byte, StateCol>, StateRow> InvShiftRows(array<array<byte, StateCol>, StateRow> state);
 	array<array<byte, StateCol>, StateRow> InvSubBytes(array<array<byte, StateCol>, StateRow> state, array<byte, SBoxSize> InvSBox);
+	array<array<byte, StateCol>, StateRow> InvMixColumns(array<array<byte, StateCol>, StateRow> state);
+	array<array<byte, StateCol>, StateRow> InvCipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> w, array<byte, SBoxSize> InvSBox);
+	vector<array<byte, WordSize>> KeyExpansionEIC(vector<byte> key, array<byte, SBoxSize> SBox, array<array<byte, WordSize>, RconSize> Rcon, int Nk = 4, int Nr = 10);
+	array<array<byte, StateCol>, StateRow> EqInvCipher(array<array<byte, StateCol>, StateRow> in, int Nr, vector<array<byte, WordSize>> dw, array<byte, SBoxSize> SBox);
 }
