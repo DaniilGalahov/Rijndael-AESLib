@@ -76,29 +76,25 @@ vector<unsigned char> AESLib::Encrypt(vector<unsigned char> data, vector<unsigne
 	using namespace AESLib::Auxilliary;
 	using namespace AESLib::Parameters;
 
-	vector<unsigned char> output = vector<unsigned char>(data.size());
-
 	Set(mode);
 
 	array<byte, SBoxSize> SBox = BuildSBox();
 	array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
 
-	vector<unsigned char> charKey = DeriveKey(key,keySize);
-	vector<byte> byteKey = vector<byte>(charKey.size());
-	for (int i = 0; i < key.size(); i++)
-	{
-		byteKey[i] = charKey[i];
-	}
+	vector<unsigned char> derivedKey = DeriveKey(key,keySize);
+	vector<byte> byteKey(derivedKey.begin(), derivedKey.end());
 	vector<array<byte, WordSize>> w = KeyExpansion(byteKey, SBox, Rcon, Nk, Nr);
 
 	AddPad(data);
+
+	vector<unsigned char> output = vector<unsigned char>(data.size(), 0x00);
 
 	for (int i = 0; i < data.size(); i = i + DataSize)
 	{
 		array<byte, DataSize> input = array<byte, DataSize>();
 		for (int j = 0; j < DataSize; j++)
 		{
-			input[j] = data[i + j];
+			input[j] = byte(data[i + j]);
 		}
 
 		array<array<byte, StateCol>, StateRow> in = InputToState(input);
@@ -107,7 +103,7 @@ vector<unsigned char> AESLib::Encrypt(vector<unsigned char> data, vector<unsigne
 
 		for (int j = 0; j < DataSize; j++)
 		{
-			output[i + j] = out[j];
+			output[i + j] = unsigned char(out[j]);
 		}
 	}
 

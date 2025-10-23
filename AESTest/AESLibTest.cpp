@@ -1,4 +1,5 @@
 #include "CppUnitTest.h"
+#include "string"
 #include "AESLib.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -44,6 +45,18 @@ namespace AESTest
 			Assert::AreEqual(test[0], derivedKey[0]);
 			Assert::AreEqual(test[7], derivedKey[7]);
 			Assert::AreEqual(test[15], derivedKey[15]);
+		}
+
+		TEST_METHOD(Test_Encrypt)
+		{
+			string info = "Lead the way my master";
+			vector<unsigned char> data (info.begin(), info.end());
+			string password = "28 08 1975";
+			vector<unsigned char> key (password.begin(), password.end());
+			Mode mode = Mode::AES128;
+			vector<unsigned char> encryptedData = Encrypt(data, key, mode);
+			string encryptedInfo(encryptedData.begin(), encryptedData.end());
+			Assert::AreNotEqual(info, encryptedInfo);
 		}
 	};
 }
