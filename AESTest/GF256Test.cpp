@@ -17,7 +17,7 @@ namespace AESTest
 
 		TEST_METHOD(Test_ClampToByte)
 		{
-			unsigned char a = 0x15c; //0x57 * 4 - more than what can be represented by one byte
+			unsigned char a = unsigned char(0x15c); //0x57 * 4 - more than what can be represented by one byte
 			unsigned char b = ClampToByte(a);
 			Assert::AreEqual(unsigned char(0x5c), b);
 		}
