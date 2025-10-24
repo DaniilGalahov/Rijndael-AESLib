@@ -37,5 +37,5 @@ namespace AESLib
 	}
 
 	vector<unsigned char> Encrypt(vector<unsigned char> openData, vector<unsigned char> userKey, Mode mode);
-	vector<unsigned char> Decrypt(vector<unsigned char> data, vector<unsigned char> key, Mode mode);
+	vector<unsigned char> Decrypt(vector<unsigned char> encryptedData, vector<unsigned char> userKey, Mode mode);
 }

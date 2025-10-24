@@ -107,3 +107,44 @@ vector<unsigned char> AESLib::Encrypt(vector<unsigned char> openData, vector<uns
 
 	return encryptedData;
 }
+
+vector<unsigned char> AESLib::Decrypt(vector<unsigned char> encryptedData, vector<unsigned char> userKey, Mode mode)
+{
+	using namespace AESLib::PKCS7;
+	using namespace AESLib::Auxilliary;
+	using namespace AESLib::Parameters;
+
+	Set(mode);
+
+	array<byte, SBoxSize> SBox = BuildSBox();
+	array<byte, SBoxSize> InvSBox = InverseSBox(SBox);
+	array<array<byte, WordSize>, RconSize> Rcon = BuildRcon();
+
+	vector<unsigned char> derivedKey = DeriveKey(userKey, keySize);
+	vector<byte> key(derivedKey.begin(), derivedKey.end());
+	vector<array<byte, WordSize>> w = KeyExpansion(key, SBox, Rcon, Nk, Nr);
+
+	vector<unsigned char> openData = vector<unsigned char>(encryptedData.size(), 0x00);
+
+	for (int i = 0; i < encryptedData.size(); i = i + DataSize)
+	{
+		array<byte, DataSize> input = array<byte, DataSize>();
+		for (int j = 0; j < DataSize; j++)
+		{
+			input[j] = byte(encryptedData[i + j]);
+		}
+
+		array<array<byte, StateCol>, StateRow> in = InputToState(input);
+		array<array<byte, StateCol>, StateRow> state = InvCipher(in, Nr, w, InvSBox);
+		array<byte, DataSize> out = StateToOutput(state);
+
+		for (int j = 0; j < DataSize; j++)
+		{
+			openData[i + j] = unsigned char(out[j]);
+		}
+	}
+
+	RemovePad(openData);
+
+	return openData;
+}
