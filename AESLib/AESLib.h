@@ -25,7 +25,7 @@ namespace AESLib
 
 	namespace Auxilliary
 	{
-		vector<unsigned char> DeriveKey(vector<unsigned char>& userKey, size_t keySize); //TODO: change function to usage SHA256 hash for key
+		vector<unsigned char> DeriveKey(vector<unsigned char>& userKey, int keySize); //TODO: change function to usage SHA256 hash for key
 	}
 
 	namespace Parameters

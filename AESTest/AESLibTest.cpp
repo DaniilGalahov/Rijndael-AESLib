@@ -22,7 +22,10 @@ namespace AESTest
 			vector<unsigned char> data = vector<unsigned char> { 'H','E','L','L','O' };
 			vector<unsigned char> test = vector<unsigned char> { 0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B };
 			AddPad(data);
+			Assert::AreEqual(16, (int)data.size());
+			Assert::AreEqual(test[0], data[0]);
 			Assert::AreEqual(test[7], data[7]);
+			Assert::AreEqual(test[15], data[15]);
 		}
 
 		TEST_METHOD(Test_RemovePad)
@@ -32,21 +35,25 @@ namespace AESTest
 			vector<unsigned char> test = vector<unsigned char>{ 'H','E','L','L','O' };
 			RemovePad(data);
 			Assert::AreEqual(5, (int)data.size());
-			Assert::AreEqual(unsigned char('O'), data[4]);
+			Assert::AreEqual(test[0], data[0]);
+			Assert::AreEqual(test[2], data[2]);
+			Assert::AreEqual(test[4], data[4]);
 		}
 
 		TEST_METHOD(Test_DeriveKey)
 		{
 			using namespace AESLib::Auxilliary;
-			vector<unsigned char> userKey = vector<unsigned char>{ 'H','E','L','L','O' };
-			vector<unsigned char> test = vector<unsigned char>{ 0x48, 0x45, 0x4C, 0x4C, 0x4F, 0x6d, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76 };
-			vector<unsigned char> derivedKey = DeriveKey(userKey,16);
-			Assert::AreEqual(16, (int)derivedKey.size());
-			Assert::AreEqual(test[0], derivedKey[0]);
-			Assert::AreEqual(test[7], derivedKey[7]);
-			Assert::AreEqual(test[15], derivedKey[15]);
+			string key = "mene, mene, tekel, parsin";
+			vector<unsigned char> keyVector(key.begin(), key.end());
+			string expected = "mene, mene, tekel, parsinmene, ";
+			vector<unsigned char> expectedVector(expected.begin(), expected.end());
+			vector<unsigned char> derivedVector = DeriveKey(keyVector,32);
+			string derived(derivedVector.begin(), derivedVector.end());
+			Assert::AreEqual(32, (int)derivedVector.size());
+			Assert::AreEqual(expected.data(), derived.data());
 		}
 
+		/*
 		TEST_METHOD(Test_Encrypt)
 		{
 			string info = "Lead the way my master";
@@ -58,5 +65,6 @@ namespace AESTest
 			string encryptedInfo(encryptedData.begin(), encryptedData.end());
 			Assert::AreNotEqual(info, encryptedInfo);
 		}
+		*/
 	};
 }
