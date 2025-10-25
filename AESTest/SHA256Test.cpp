@@ -1,4 +1,5 @@
 #include "CppUnitTest.h"
+#include <cstdint>
 #include "SHA256.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -40,7 +41,7 @@ namespace AESTest
 			uint32_t y = 65536;
 			uint32_t z = 32768;
 			uint32_t result = Ch(x, y, z);
-			Assert::AreEqual(uint32_t(65536), result);
+			Assert::AreEqual(uint32_t(98304), result);
 		}
 
 		TEST_METHOD(Test_Maj)
@@ -132,6 +133,21 @@ namespace AESTest
 			Assert::AreEqual(uint32_t(1633837952), W[0]);
 			Assert::AreEqual(uint32_t(3552024379), W[31]);
 			Assert::AreEqual(uint32_t(313650667), W[63]);
+		}
+
+		TEST_METHOD(Test_Hash)
+		{
+			string characters = "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq";
+			vector<unsigned char> input = vector<unsigned char>(characters.begin(), characters.end());
+			array<uint32_t, 8> H = Hash(input);
+			Assert::AreEqual(uint32_t(0x248d6a61), H[0]);
+			Assert::AreEqual(uint32_t(0xd20638b8), H[1]);
+			Assert::AreEqual(uint32_t(0xe5c02693), H[2]);
+			Assert::AreEqual(uint32_t(0x0c3e6039), H[3]);
+			Assert::AreEqual(uint32_t(0xa33ce459), H[4]);
+			Assert::AreEqual(uint32_t(0x64ff2167), H[5]);
+			Assert::AreEqual(uint32_t(0xf6ecedd4), H[6]);
+			Assert::AreEqual(uint32_t(0x19db06c1), H[7]);
 		}
 	};
 }

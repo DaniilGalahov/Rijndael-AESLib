@@ -47,5 +47,5 @@ namespace SHA256
 		array<uint32_t, MessageScheduleSize> PrepareMessageSchedule(array<uint32_t, BlockNumber> M);
 	}
 
-	vector<unsigned char> Hash(vector<unsigned char> input);
+	array<uint32_t, 8> Hash(vector<unsigned char> input);
 }

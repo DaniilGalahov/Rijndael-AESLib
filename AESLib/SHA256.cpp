@@ -12,7 +12,7 @@ uint32_t SHA256::Functions::RotR(uint32_t x, uint32_t n, uint32_t w)
 
 uint32_t SHA256::Functions::Ch(uint32_t x, uint32_t y, uint32_t z)
 {
-	return (x & y) ^ (x & z);
+	return (x & y) ^ (~x & z); // in .pdf of FIPS 180-2 and FIPS 180-4 symbol "~" is not visible!
 }
 
 uint32_t SHA256::Functions::Maj(uint32_t x, uint32_t y, uint32_t z)
@@ -101,7 +101,7 @@ array<uint32_t, MessageScheduleSize> SHA256::Functions::PrepareMessageSchedule(a
 	return W;
 }
 
-vector<unsigned char> SHA256::Hash(vector<unsigned char> input)
+array<uint32_t,8> SHA256::Hash(vector<unsigned char> input)
 {
 	using namespace Functions;
 	uint32_t T1, T2;
@@ -110,7 +110,7 @@ vector<unsigned char> SHA256::Hash(vector<unsigned char> input)
 	string paddedInputBits = Pad(inputBits);
 	vector<array<uint32_t, BlockNumber>> M = Parse(paddedInputBits);
 	uint32_t N = M.size();
-	for (uint32_t i = 1; i < N; i++)
+	for (uint32_t i = 0; i < N; i++)
 	{
 		array<uint32_t, MessageScheduleSize> W = PrepareMessageSchedule(M[i]);
 		uint32_t a = H[0];
@@ -121,11 +121,27 @@ vector<unsigned char> SHA256::Hash(vector<unsigned char> input)
 		uint32_t f = H[5];
 		uint32_t g = H[6];
 		uint32_t h = H[7];
-		for (uint32_t t = 0; i < MessageScheduleSize; t++)
+		for (uint32_t t = 0; t < MessageScheduleSize; t++)
 		{
-			T1 = h ^ Sigma1(e) ^ Ch(e, f, g) ^ K[t] ^ W[t];
+			T1 = h + Sigma1(e) + Ch(e, f, g) + K[t] + W[t];
+			T2 = Sigma0(a) + Maj(a, b, c);
+			h = g;
+			g = f;
+			f = e;
+			e = d + T1;
+			d = c;
+			c = b;
+			b = a;
+			a = T1 + T2;
 		}
+		H[0] = a + H[0];
+		H[1] = b + H[1];
+		H[2] = c + H[2];
+		H[3] = d + H[3];
+		H[4] = e + H[4];
+		H[5] = f + H[5];
+		H[6] = g + H[6];
+		H[7] = h + H[7];
 	}
-
-	return vector<unsigned char>(0);
+	return H;
 }
