@@ -36,16 +36,12 @@ bool AESLib::PKCS7::RemovePad(vector<unsigned char>& data)
 vector<unsigned char> AESLib::Auxilliary::DeriveKey(vector<unsigned char>& userKey, int keySize)
 {
 	vector<unsigned char> derivedKey = vector<unsigned char>(keySize, 0x00);
-	int i = 0;
-	int j = 0;
-	while (i < keySize - 1)
+	array<uint32_t, 8> H = SHA256::Hash(userKey);
+	for (int i = 0; i < derivedKey.size(); i = i + 4)
 	{
-		derivedKey[i] = userKey[j];
-		i++;
-		j++;
-		if (j >= userKey.size())
+		for (int j = 0; j < 4; j++)
 		{
-			j = 0;
+			derivedKey[i+j] = unsigned char(H[i / 4] >> (j * 8));
 		}
 	}
 	return derivedKey;

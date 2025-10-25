@@ -2,6 +2,7 @@
 #include "vector"
 #include "array"
 #include "Utility.h"
+#include "SHA256.h"
 #include "AES.h"
 
 using namespace std;
@@ -25,7 +26,7 @@ namespace AESLib
 
 	namespace Auxilliary
 	{
-		vector<unsigned char> DeriveKey(vector<unsigned char>& userKey, int keySize); //TODO: change function to usage SHA256 hash for key
+		vector<unsigned char> DeriveKey(vector<unsigned char>& userKey, int keySize); //TODO: improve function to utilize PBKDF2-HMAC KDF logic
 	}
 
 	namespace Parameters
