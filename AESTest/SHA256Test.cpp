@@ -84,5 +84,26 @@ namespace AESTest
 			unsigned long result = sigma1(x);
 			Assert::AreEqual(unsigned long(2684354624), result);
 		}
+
+		TEST_METHOD(Test_ToBitString)
+		{
+			using namespace Functions;
+			string characters = "abc";
+			vector<unsigned char> input = vector<unsigned char>(characters.begin(), characters.end());
+			string bits = ToBitString(input);
+			Assert::AreEqual(string("011000010110001001100011"), bits);
+		}
+
+		TEST_METHOD(Test_Pad)
+		{
+			using namespace Functions;
+			string characters = "abc";
+			vector<unsigned char> input = vector<unsigned char>(characters.begin(), characters.end());
+			string inputBits = ToBitString(input);
+			string paddedInputBits = Pad(inputBits);
+			Assert::AreEqual(size_t(512), paddedInputBits.size());
+			Assert::AreEqual(string("011000010110001001100011"), paddedInputBits.substr(0,24));
+			Assert::AreEqual(string("011000"), paddedInputBits.substr(506, 6));
+		}
 	};
 }

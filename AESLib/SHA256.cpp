@@ -39,3 +39,41 @@ unsigned long SHA256::Functions::sigma1(unsigned long x)
 {
 	return RotR(x, 17) ^ RotR(x, 19) ^ ShR(x, 10);
 }
+
+string SHA256::Functions::ToBitString(vector<unsigned char> input)
+{
+	string inputBits = "";
+	for (unsigned long i = 0; i < input.size(); i++)
+	{
+		unsigned char currentInputChar = input[i];
+		inputBits += bitset<8>(currentInputChar).to_string();
+	}
+	return inputBits;
+}
+
+string SHA256::Functions::Pad(string inputBits)
+{
+	unsigned long l = inputBits.size();
+	unsigned long k = (448 - (l + 1)) % 512;
+	inputBits += "1";
+	for (unsigned long i = 0; i < k; i++)
+	{
+		inputBits += "0";
+	}
+	inputBits += bitset<64>(unsigned long long(l)).to_string();
+	return inputBits;
+}
+
+vector<unsigned char> SHA256::Hash(vector<unsigned char> input)
+{
+	string inputBits = "";
+	for (unsigned long i = 0; i < input.size(); i++)
+	{
+		unsigned char currentInputChar = input[i];
+		inputBits += bitset<8>(currentInputChar).to_string();
+	}
+	unsigned long l = inputBits.size();
+	inputBits += "1";
+
+	return vector<unsigned char>(0);
+}

@@ -1,5 +1,8 @@
 #pragma once
 #include <array>
+#include <vector>
+#include <bitset>
+#include <string>
 
 using namespace std;
 
@@ -31,5 +34,10 @@ namespace SHA256
 		unsigned long Sigma1(unsigned long x);
 		unsigned long sigma0(unsigned long x);
 		unsigned long sigma1(unsigned long x);
+
+		string ToBitString(vector<unsigned char> input);
+		string Pad(string inputBits);
 	}
+
+	vector<unsigned char> Hash(vector<unsigned char> input);
 }
