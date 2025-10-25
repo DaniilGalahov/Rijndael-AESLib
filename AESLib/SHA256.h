@@ -4,6 +4,11 @@
 #include <bitset>
 #include <string>
 
+#define BlockSize 512
+#define BlockNumber 16
+#define WordSize 32
+#define MessageScheduleSize 64
+
 using namespace std;
 
 namespace SHA256
@@ -37,6 +42,8 @@ namespace SHA256
 
 		string ToBitString(vector<unsigned char> input);
 		string Pad(string inputBits);
+		vector<array<unsigned long, BlockNumber>> Parse(string paddedInputBits);
+		array<unsigned long, MessageScheduleSize> PrepareMessageSchedule(array<unsigned long, BlockNumber> M);
 	}
 
 	vector<unsigned char> Hash(vector<unsigned char> input);

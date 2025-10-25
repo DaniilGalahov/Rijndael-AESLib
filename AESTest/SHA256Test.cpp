@@ -105,5 +105,33 @@ namespace AESTest
 			Assert::AreEqual(string("011000010110001001100011"), paddedInputBits.substr(0,24));
 			Assert::AreEqual(string("011000"), paddedInputBits.substr(506, 6));
 		}
+
+		TEST_METHOD(Test_Parse)
+		{
+			using namespace Functions;
+			string characters = "abc";
+			vector<unsigned char> input = vector<unsigned char>(characters.begin(), characters.end());
+			string inputBits = ToBitString(input);
+			string paddedInputBits = Pad(inputBits);
+			vector<array<unsigned long, BlockNumber>> M = Parse(paddedInputBits);
+			Assert::AreEqual(size_t(1), M.size());
+			Assert::AreEqual(size_t(16), M[0].size());
+			Assert::AreEqual(unsigned long(1633837952), M[0][0]);
+		}
+
+		TEST_METHOD(Test_PrepareMessageSchedule)
+		{
+			using namespace Functions;
+			string characters = "abc";
+			vector<unsigned char> input = vector<unsigned char>(characters.begin(), characters.end());
+			string inputBits = ToBitString(input);
+			string paddedInputBits = Pad(inputBits);
+			vector<array<unsigned long, BlockNumber>> M = Parse(paddedInputBits);
+			array<unsigned long, MessageScheduleSize> W = PrepareMessageSchedule(M[0]);
+			Assert::AreEqual(size_t(64), W.size());
+			Assert::AreEqual(unsigned long(1633837952), W[0]);
+			Assert::AreEqual(unsigned long(3839680249), W[31]);
+			Assert::AreEqual(unsigned long(2236430632), W[63]);
+		}
 	};
 }

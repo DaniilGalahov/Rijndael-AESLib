@@ -45,8 +45,9 @@ string SHA256::Functions::ToBitString(vector<unsigned char> input)
 	string inputBits = "";
 	for (unsigned long i = 0; i < input.size(); i++)
 	{
-		unsigned char currentInputChar = input[i];
-		inputBits += bitset<8>(currentInputChar).to_string();
+		unsigned char currentByte = input[i];
+		bitset<8> currentBits = bitset<8>(currentByte);
+		inputBits += currentBits.to_string();
 	}
 	return inputBits;
 }
@@ -64,16 +65,53 @@ string SHA256::Functions::Pad(string inputBits)
 	return inputBits;
 }
 
+vector<array<unsigned long, BlockNumber>> SHA256::Functions::Parse(string paddedInputBits)
+{
+	unsigned long blockQty = paddedInputBits.size() / BlockSize;
+	vector<array<unsigned long, BlockNumber>> M = vector<array<unsigned long, BlockNumber>>(blockQty);
+	for (unsigned long i = 0; i < blockQty; i++)
+	{
+		string currentBlockBits = paddedInputBits.substr(i * BlockSize, BlockSize);
+		array<unsigned long, BlockNumber> currentBlock = array<unsigned long, BlockNumber>();
+		for (unsigned long j = 0; j < BlockNumber; j++)
+		{
+			string currentWordBits = currentBlockBits.substr(j * WordSize, WordSize);
+			unsigned long word = stoul(currentWordBits, nullptr, 2);
+			currentBlock[j] = word;
+		}
+		M[i] = currentBlock;
+	}
+	return M;
+}
+
+array<unsigned long, MessageScheduleSize> SHA256::Functions::PrepareMessageSchedule(array<unsigned long, BlockNumber> Mi)
+{
+	array<unsigned long, MessageScheduleSize> W = array<unsigned long, MessageScheduleSize>();
+	for (unsigned long t = 0; t < MessageScheduleSize; t++)
+	{
+		if (t >= 0 && t <= 15)
+		{
+			W[t] = Mi[t];
+		}
+		if (t >= 16 && t <= 63)
+		{
+			W[t] = sigma1(W[t - 2]) ^ W[t - 7] ^ sigma0(W[t - 15]) ^ W[t - 16];
+		}
+	}
+	return W;
+}
+
 vector<unsigned char> SHA256::Hash(vector<unsigned char> input)
 {
-	string inputBits = "";
-	for (unsigned long i = 0; i < input.size(); i++)
+	using namespace Functions;
+	string inputBits = ToBitString(input);
+	string paddedInputBits = Pad(inputBits);
+	vector<array<unsigned long, BlockNumber>> M = Parse(paddedInputBits);
+	unsigned long N = M.size();
+	for (unsigned long i = 1; i < N; i++)
 	{
-		unsigned char currentInputChar = input[i];
-		inputBits += bitset<8>(currentInputChar).to_string();
+		array<unsigned long, MessageScheduleSize> W = PrepareMessageSchedule(M[i]);
 	}
-	unsigned long l = inputBits.size();
-	inputBits += "1";
 
 	return vector<unsigned char>(0);
 }
