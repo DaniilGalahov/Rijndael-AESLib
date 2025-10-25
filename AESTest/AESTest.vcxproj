@@ -162,6 +162,7 @@
     <ClCompile Include="AESLibTest.cpp" />
     <ClCompile Include="AESTest.cpp" />
     <ClCompile Include="GF256Test.cpp" />
+    <ClCompile Include="SHA256Test.cpp" />
     <ClCompile Include="UtilityTest.cpp" />
   </ItemGroup>
   <ItemGroup>

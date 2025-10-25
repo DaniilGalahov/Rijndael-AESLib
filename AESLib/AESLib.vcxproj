@@ -143,12 +143,14 @@
     <ClInclude Include="AESLib.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="GF256.h" />
+    <ClInclude Include="SHA256.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AES.cpp" />
     <ClCompile Include="AESLib.cpp" />
     <ClCompile Include="GF256.cpp" />
+    <ClCompile Include="SHA256.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
