@@ -54,7 +54,7 @@ string SHA256::Functions::ToBitString(vector<unsigned char> input)
 
 string SHA256::Functions::Pad(string inputBits)
 {
-	uint32_t l = inputBits.size();
+	uint32_t l = (uint32_t)inputBits.size();
 	uint32_t k = (448 - (l + 1)) % 512;
 	inputBits += "1";
 	for (uint32_t i = 0; i < k; i++)
@@ -67,7 +67,7 @@ string SHA256::Functions::Pad(string inputBits)
 
 vector<array<uint32_t, SHABlockNumber>> SHA256::Functions::Parse(string paddedInputBits)
 {
-	uint32_t blockQty = paddedInputBits.size() / SHABlockSize;
+	uint32_t blockQty = (uint32_t)paddedInputBits.size() / SHABlockSize;
 	vector<array<uint32_t, SHABlockNumber>> M = vector<array<uint32_t, SHABlockNumber>>(blockQty);
 	for (uint32_t i = 0; i < blockQty; i++)
 	{
@@ -109,7 +109,7 @@ array<uint32_t,8> SHA256::Hash(vector<unsigned char> input)
 	string inputBits = ToBitString(input);
 	string paddedInputBits = Pad(inputBits);
 	vector<array<uint32_t, SHABlockNumber>> M = Parse(paddedInputBits);
-	uint32_t N = M.size();
+	uint32_t N = (uint32_t)M.size();
 	for (uint32_t i = 0; i < N; i++)
 	{
 		array<uint32_t, MessageScheduleSize> W = PrepareMessageSchedule(M[i]);
