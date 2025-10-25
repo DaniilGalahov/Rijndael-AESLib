@@ -26,5 +26,10 @@ namespace SHA256
 		unsigned long ShR(unsigned long x, unsigned long n);
 		unsigned long RotR(unsigned long x, unsigned long n, unsigned long w = 32);
 		unsigned long Ch(unsigned long x, unsigned long y, unsigned long z);
+		unsigned long Maj(unsigned long x, unsigned long y, unsigned long z);
+		unsigned long Sigma0(unsigned long x);
+		unsigned long Sigma1(unsigned long x);
+		unsigned long sigma0(unsigned long x);
+		unsigned long sigma1(unsigned long x);
 	}
 }

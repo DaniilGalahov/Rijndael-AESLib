@@ -42,5 +42,47 @@ namespace AESTest
 			unsigned long result = Ch(x, y, z);
 			Assert::AreEqual(unsigned long(65536), result);
 		}
+
+		TEST_METHOD(Test_Maj)
+		{
+			using namespace Functions;
+			unsigned long x = 65536;
+			unsigned long y = 65536;
+			unsigned long z = 65536;
+			unsigned long result = Maj(x, y, z);
+			Assert::AreEqual(unsigned long(65536), result);
+		}
+
+		TEST_METHOD(Test_Sigma0)
+		{
+			using namespace Functions;
+			unsigned long x = 65536;
+			unsigned long result = Sigma0(x);
+			Assert::AreEqual(unsigned long(67125256), result);
+		}
+
+		TEST_METHOD(Test_Sigma1)
+		{
+			using namespace Functions;
+			unsigned long x = 65536;
+			unsigned long result = Sigma1(x);
+			Assert::AreEqual(unsigned long(8389664), result);
+		}
+
+		TEST_METHOD(Test_sigma0)
+		{
+			using namespace Functions;
+			unsigned long x = 65536;
+			unsigned long result = sigma0(x);
+			Assert::AreEqual(unsigned long(1073750528), result);
+		}
+
+		TEST_METHOD(Test_sigma1)
+		{
+			using namespace Functions;
+			unsigned long x = 65536;
+			unsigned long result = sigma1(x);
+			Assert::AreEqual(unsigned long(2684354624), result);
+		}
 	};
 }
