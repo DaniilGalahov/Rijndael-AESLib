@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.IO;
+using System.Text;
+using AESBridge;
 
 namespace Rijndael
 {
@@ -65,13 +67,81 @@ namespace Rijndael
                 return false;
             }
 
-            if(!Directory.Exists(textBoxDestinationFilePath.Text))
+            if(!Directory.Exists(Path.GetDirectoryName(textBoxDestinationFilePath.Text)))
             {
                 labelStatus.Text = "Destination directory does not exist";
                 return false;
             }
 
+            if(File.Exists(textBoxDestinationFilePath.Text))
+            {
+                labelStatus.Text = "Destination file already exist";
+                return false;
+            }
+
+            if(textBoxPassword.Text.Length < 7)
+            {
+                labelStatus.Text = "Password too short";
+                return false;
+            }
+
             return true;
+        }
+
+        private void SetControlResponseTo(bool value)
+        {
+            buttonEncrypt.Enabled = value;
+            buttonDecrypt.Enabled = value;
+            textBoxSourceFilePath.Enabled = value;
+            buttonSelectSourceFile.Enabled = value;
+            textBoxDestinationFilePath.Enabled = value;
+            buttonSelectDestinationFile.Enabled = value;
+            textBoxPassword.Enabled = value;
+            comboBoxEncryptionStandard.Enabled = value;
+        }
+
+        private void DisableControls()
+        {
+            SetControlResponseTo(false);
+        }
+
+        private void EnableControls()
+        {
+            SetControlResponseTo(true);
+        }
+
+        private void Encrypt()
+        {
+            DisableControls();
+
+            labelStatus.Text = "Encryption started";
+
+            Byte[] openData = File.ReadAllBytes(textBoxSourceFilePath.Text);
+            Byte[] userKey = Encoding.UTF8.GetBytes(textBoxPassword.Text);
+            Mode mode = (Mode)comboBoxEncryptionStandard.SelectedIndex;
+            Byte[] encryptedData = AES.Encrypt(openData, userKey, mode);
+            File.WriteAllBytes(textBoxDestinationFilePath.Text, encryptedData);
+
+            labelStatus.Text = "Encryption finished";
+
+            EnableControls();
+        }
+
+        private void Decrypt()
+        {
+            DisableControls();
+
+            labelStatus.Text = "Decryption started";
+
+            Byte[] encryptedData = File.ReadAllBytes(textBoxSourceFilePath.Text);
+            Byte[] userKey = Encoding.UTF8.GetBytes(textBoxPassword.Text);
+            Mode mode = (Mode)comboBoxEncryptionStandard.SelectedIndex;
+            Byte[] openData = AES.Decrypt(encryptedData, userKey, mode);
+            File.WriteAllBytes(textBoxDestinationFilePath.Text, openData);
+
+            labelStatus.Text = "Decryption finished";
+
+            EnableControls();
         }
 
         private void buttonEncrypt_Click(object sender, EventArgs e)
@@ -82,6 +152,24 @@ namespace Rijndael
             {
                 return;
             }
+
+            labelStatus.Text = "Parameters valid";
+
+            Encrypt();
+        }
+
+        private void buttonDecrypt_Click(object sender, EventArgs e)
+        {
+            labelStatus.Text = "Button \"Decrypt\" clicked";
+
+            if (!ParametersValid())
+            {
+                return;
+            }
+
+            labelStatus.Text = "Parameters valid";
+
+            Decrypt();
         }
     }
 }
