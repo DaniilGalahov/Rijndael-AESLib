@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <array>
 #include <vector>
 #include <bitset>
@@ -13,11 +14,11 @@ using namespace std;
 
 namespace SHA256
 {
-	const array<unsigned long, 8> h = array<unsigned long, 8> 
+	const array<uint32_t, 8> Hinit = array<uint32_t, 8> 
 	{
 		0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
 	};
-	const array<unsigned long, 64> k = array<unsigned long, 64>
+	const array<uint32_t, 64> K = array<uint32_t, 64>
 	{
 		0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 		0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -31,19 +32,19 @@ namespace SHA256
 
 	namespace Functions
 	{
-		unsigned long ShR(unsigned long x, unsigned long n);
-		unsigned long RotR(unsigned long x, unsigned long n, unsigned long w = 32);
-		unsigned long Ch(unsigned long x, unsigned long y, unsigned long z);
-		unsigned long Maj(unsigned long x, unsigned long y, unsigned long z);
-		unsigned long Sigma0(unsigned long x);
-		unsigned long Sigma1(unsigned long x);
-		unsigned long sigma0(unsigned long x);
-		unsigned long sigma1(unsigned long x);
+		uint32_t ShR(uint32_t x, uint32_t n);
+		uint32_t RotR(uint32_t x, uint32_t n, uint32_t w = 32);
+		uint32_t Ch(uint32_t x, uint32_t y, uint32_t z);
+		uint32_t Maj(uint32_t x, uint32_t y, uint32_t z);
+		uint32_t Sigma0(uint32_t x);
+		uint32_t Sigma1(uint32_t x);
+		uint32_t sigma0(uint32_t x);
+		uint32_t sigma1(uint32_t x);
 
 		string ToBitString(vector<unsigned char> input);
 		string Pad(string inputBits);
-		vector<array<unsigned long, BlockNumber>> Parse(string paddedInputBits);
-		array<unsigned long, MessageScheduleSize> PrepareMessageSchedule(array<unsigned long, BlockNumber> M);
+		vector<array<uint32_t, BlockNumber>> Parse(string paddedInputBits);
+		array<uint32_t, MessageScheduleSize> PrepareMessageSchedule(array<uint32_t, BlockNumber> M);
 	}
 
 	vector<unsigned char> Hash(vector<unsigned char> input);
