@@ -114,7 +114,7 @@ namespace AESTest
 			vector<unsigned char> input = vector<unsigned char>(characters.begin(), characters.end());
 			string inputBits = ToBitString(input);
 			string paddedInputBits = Pad(inputBits);
-			vector<array<uint32_t, BlockNumber>> M = Parse(paddedInputBits);
+			vector<array<uint32_t, SHABlockNumber>> M = Parse(paddedInputBits);
 			Assert::AreEqual(size_t(1), M.size());
 			Assert::AreEqual(size_t(16), M[0].size());
 			Assert::AreEqual(uint32_t(1633837952), M[0][0]);
@@ -127,7 +127,7 @@ namespace AESTest
 			vector<unsigned char> input = vector<unsigned char>(characters.begin(), characters.end());
 			string inputBits = ToBitString(input);
 			string paddedInputBits = Pad(inputBits);
-			vector<array<uint32_t, BlockNumber>> M = Parse(paddedInputBits);
+			vector<array<uint32_t, SHABlockNumber>> M = Parse(paddedInputBits);
 			array<uint32_t, MessageScheduleSize> W = PrepareMessageSchedule(M[0]);
 			Assert::AreEqual(size_t(64), W.size());
 			Assert::AreEqual(uint32_t(1633837952), W[0]);

@@ -5,8 +5,8 @@
 #include <bitset>
 #include <string>
 
-#define BlockSize 512
-#define BlockNumber 16
+#define SHABlockSize 512
+#define SHABlockNumber 16
 #define SHAWordSize 32
 #define MessageScheduleSize 64
 
@@ -43,8 +43,8 @@ namespace SHA256
 
 		string ToBitString(vector<unsigned char> input);
 		string Pad(string inputBits);
-		vector<array<uint32_t, BlockNumber>> Parse(string paddedInputBits);
-		array<uint32_t, MessageScheduleSize> PrepareMessageSchedule(array<uint32_t, BlockNumber> M);
+		vector<array<uint32_t, SHABlockNumber>> Parse(string paddedInputBits);
+		array<uint32_t, MessageScheduleSize> PrepareMessageSchedule(array<uint32_t, SHABlockNumber> M);
 	}
 
 	array<uint32_t, 8> Hash(vector<unsigned char> input);

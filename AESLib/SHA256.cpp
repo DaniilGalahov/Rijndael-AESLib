@@ -65,15 +65,15 @@ string SHA256::Functions::Pad(string inputBits)
 	return inputBits;
 }
 
-vector<array<uint32_t, BlockNumber>> SHA256::Functions::Parse(string paddedInputBits)
+vector<array<uint32_t, SHABlockNumber>> SHA256::Functions::Parse(string paddedInputBits)
 {
-	uint32_t blockQty = paddedInputBits.size() / BlockSize;
-	vector<array<uint32_t, BlockNumber>> M = vector<array<uint32_t, BlockNumber>>(blockQty);
+	uint32_t blockQty = paddedInputBits.size() / SHABlockSize;
+	vector<array<uint32_t, SHABlockNumber>> M = vector<array<uint32_t, SHABlockNumber>>(blockQty);
 	for (uint32_t i = 0; i < blockQty; i++)
 	{
-		string currentBlockBits = paddedInputBits.substr(i * BlockSize, BlockSize);
-		array<uint32_t, BlockNumber> currentBlock = array<uint32_t, BlockNumber>();
-		for (uint32_t j = 0; j < BlockNumber; j++)
+		string currentBlockBits = paddedInputBits.substr(i * SHABlockSize, SHABlockSize);
+		array<uint32_t, SHABlockNumber> currentBlock = array<uint32_t, SHABlockNumber>();
+		for (uint32_t j = 0; j < SHABlockNumber; j++)
 		{
 			string currentWordBits = currentBlockBits.substr(j * SHAWordSize, SHAWordSize);
 			uint32_t word = stoul(currentWordBits, nullptr, 2);
@@ -84,7 +84,7 @@ vector<array<uint32_t, BlockNumber>> SHA256::Functions::Parse(string paddedInput
 	return M;
 }
 
-array<uint32_t, MessageScheduleSize> SHA256::Functions::PrepareMessageSchedule(array<uint32_t, BlockNumber> Mi)
+array<uint32_t, MessageScheduleSize> SHA256::Functions::PrepareMessageSchedule(array<uint32_t, SHABlockNumber> Mi)
 {
 	array<uint32_t, MessageScheduleSize> W = array<uint32_t, MessageScheduleSize>();
 	for (uint32_t t = 0; t < MessageScheduleSize; t++)
@@ -108,7 +108,7 @@ array<uint32_t,8> SHA256::Hash(vector<unsigned char> input)
 	array<uint32_t, 8> H = Hinit;
 	string inputBits = ToBitString(input);
 	string paddedInputBits = Pad(inputBits);
-	vector<array<uint32_t, BlockNumber>> M = Parse(paddedInputBits);
+	vector<array<uint32_t, SHABlockNumber>> M = Parse(paddedInputBits);
 	uint32_t N = M.size();
 	for (uint32_t i = 0; i < N; i++)
 	{
