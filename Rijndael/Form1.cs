@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Rijndael
 {
@@ -41,6 +42,45 @@ namespace Rijndael
             catch (Exception ex)
             {
                 MessageBox.Show("Cannot open link. " + ex.Message);
+            }
+        }
+
+        private bool ParametersValid()
+        {
+            if (textBoxSourceFilePath.Text.Length == 0)
+            {
+                labelStatus.Text = "No source file path";
+                return false;
+            }
+
+            if (!File.Exists(textBoxSourceFilePath.Text))
+            {
+                labelStatus.Text = "Source file does not exist";
+                return false;
+            }
+
+            if (textBoxDestinationFilePath.Text.Length == 0)
+            {
+                labelStatus.Text = "No destination file path";
+                return false;
+            }
+
+            if(!Directory.Exists(textBoxDestinationFilePath.Text))
+            {
+                labelStatus.Text = "Destination directory does not exist";
+                return false;
+            }
+
+            return true;
+        }
+
+        private void buttonEncrypt_Click(object sender, EventArgs e)
+        {
+            labelStatus.Text = "Button \"Encrypt\" clicked";
+
+            if (!ParametersValid())
+            {
+                return;
             }
         }
     }

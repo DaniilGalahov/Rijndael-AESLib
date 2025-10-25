@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxSourceFilePath = new System.Windows.Forms.TextBox();
             this.buttonSelectSourceFile = new System.Windows.Forms.Button();
@@ -45,7 +46,7 @@
             this.buttonEncrypt = new System.Windows.Forms.Button();
             this.buttonDecrypt = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelStatus = new System.Windows.Forms.Label();
             this.linkLabelHelp = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
@@ -157,6 +158,7 @@
             this.buttonEncrypt.TabIndex = 11;
             this.buttonEncrypt.Text = "Encrypt";
             this.buttonEncrypt.UseVisualStyleBackColor = true;
+            this.buttonEncrypt.Click += new System.EventHandler(this.buttonEncrypt_Click);
             // 
             // buttonDecrypt
             // 
@@ -176,14 +178,14 @@
             this.label5.TabIndex = 13;
             this.label5.Text = "Status:";
             // 
-            // label6
+            // labelStatus
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(61, 176);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(38, 13);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Ready";
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Location = new System.Drawing.Point(61, 176);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(38, 13);
+            this.labelStatus.TabIndex = 14;
+            this.labelStatus.Text = "Ready";
             // 
             // linkLabelHelp
             // 
@@ -202,7 +204,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 201);
             this.Controls.Add(this.linkLabelHelp);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.buttonDecrypt);
             this.Controls.Add(this.buttonEncrypt);
@@ -217,6 +219,7 @@
             this.Controls.Add(this.textBoxSourceFilePath);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Rijndael AES cipher system";
@@ -243,7 +246,7 @@
         private System.Windows.Forms.Button buttonEncrypt;
         private System.Windows.Forms.Button buttonDecrypt;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.LinkLabel linkLabelHelp;
     }
 }
