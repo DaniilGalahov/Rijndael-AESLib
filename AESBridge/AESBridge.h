@@ -11,6 +11,7 @@ namespace AESBridge {
 
 	public ref class AES sealed
 	{
+	public:
 		static cli::array<System::Byte>^ Encrypt(cli::array<System::Byte>^ openData, cli::array<System::Byte>^ userKey, Mode mode);
 		static cli::array<System::Byte>^ Decrypt(cli::array<System::Byte>^ encryptedData, cli::array<System::Byte>^ userKey, Mode mode);
 	};
