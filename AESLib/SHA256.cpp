@@ -75,7 +75,7 @@ vector<array<uint32_t, BlockNumber>> SHA256::Functions::Parse(string paddedInput
 		array<uint32_t, BlockNumber> currentBlock = array<uint32_t, BlockNumber>();
 		for (uint32_t j = 0; j < BlockNumber; j++)
 		{
-			string currentWordBits = currentBlockBits.substr(j * WordSize, WordSize);
+			string currentWordBits = currentBlockBits.substr(j * SHAWordSize, SHAWordSize);
 			uint32_t word = stoul(currentWordBits, nullptr, 2);
 			currentBlock[j] = word;
 		}

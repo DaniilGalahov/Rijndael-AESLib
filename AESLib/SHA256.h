@@ -7,7 +7,7 @@
 
 #define BlockSize 512
 #define BlockNumber 16
-#define WordSize 32
+#define SHAWordSize 32
 #define MessageScheduleSize 64
 
 using namespace std;
