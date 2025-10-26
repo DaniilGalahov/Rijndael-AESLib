@@ -34,26 +34,10 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
-      
-    - name: Locate VSTest
-      shell: pwsh
-      run: |
-        $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
-            -latest -products * `
-            -requires Microsoft.Component.TestTools.Build `
-            -property installationPath
-        if (-not $vs) { throw "Visual Studio not found." }
-        $p1 = Join-Path $vs "Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
-        $p2 = Join-Path $vs "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
-        if (Test-Path $p1) { $vstest = $p1 }
-        elseif (Test-Path $p2) { $vstest = $p2 }
-        else { throw "vstest.console.exe not found under $vs" }
-        "VSTEST_PATH=$vstest" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+    - name: Setup VSTest.exe
+      uses: Malcolmnixon/Setup-VSTest@v4
 
     - name: Run C++ tests (VSTest)
-    shell: pwsh
-    run: |
-      & "${env:VSTEST_PATH}" `
-      "${{ env.PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\AESTest.dll" `
-      /Platform:${{ env.PLATFORM }} `
-      /InIsolation
+      shell: pwsh
+      run: vstest.console "${{ env.PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\AESTest.dll" /Platform:${{ env.PLATFORM }} /InIsolation
