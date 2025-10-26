@@ -26,8 +26,8 @@ jobs:
     steps:
     - name: Checkout state
       uses: actions/checkout@v4
-      lfs: true
-      fetch-depth: 0
+        lfs: true
+        fetch-depth: 0
 
     - name: Pull latest LFS lfs
       run: git lfs pull
