@@ -36,7 +36,7 @@ namespace Rijndael
             {
                 var psi = new System.Diagnostics.ProcessStartInfo
                 {
-                    FileName = "https://github.com/DaniilGalahov",
+                    FileName = "https://github.com/DaniilGalahov/Rijndael-AESLib",
                     UseShellExecute = true
                 };
                 System.Diagnostics.Process.Start(psi);
