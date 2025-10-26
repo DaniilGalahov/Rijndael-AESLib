@@ -114,6 +114,7 @@ using AESBridge;
 ---
 <a id="Rijndael_usage"></a>
 ### Rijndael
+Latest version of Rijndael app can be downloaded [here](https://github.com/DaniilGalahov/Rijndael-AESLib/releases).
 
 #### Purpose
 This app provides core functionality of AES cryptography, especially:
