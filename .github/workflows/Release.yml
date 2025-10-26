@@ -11,15 +11,15 @@ on:
         type: boolean
         default: false
 
-permissions:
-  contents: write
-
 env:
   SOLUTION_FILE_PATH: AES.sln
   BUILD_CONFIGURATION: Release
   PLATFORM: x64
+
+permissions:
+  contents: write
  
- jobs:
+jobs:
   build:
     runs-on: windows-latest
     
