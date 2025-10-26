@@ -44,8 +44,8 @@ jobs:
             -property installationPath
         if (-not $vs) { throw "Visual Studio not found." }
 
-      $p1 = Join-Path $vs 'Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
-      $p2 = Join-Path $vs 'Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe'
+      $p1 = Join-Path $vs "Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
+      $p2 = Join-Path $vs "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
 
       if (Test-Path $p1) { $vstest = $p1 }
       elseif (Test-Path $p2) { $vstest = $p2 }
