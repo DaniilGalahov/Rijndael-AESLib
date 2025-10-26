@@ -1,0 +1,68 @@
+name: Release (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v1.0.0)"
+        required: true
+      prerelease:
+        description: "Mark as prerelease?"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+env:
+  SOLUTION_FILE_PATH: AES.sln
+  BUILD_CONFIGURATION: Release
+  PLATFORM: x64
+ 
+ jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+      
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Setup VSTest.exe
+      uses: Malcolmnixon/Setup-VSTest@v4
+
+    - name: Run C++ tests (VSTest)
+      shell: pwsh
+      run: vstest.console "${{ env.PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\AESTest.dll" /Platform:${{ env.PLATFORM }} /InIsolation
+  
+    - name: Package artifacts
+      shell: pwsh
+      run: |
+          New-Item -ItemType Directory dist | Out-Null
+          Copy-Item "Rijndael\bin\${{ env.BUILD_CONFIGURATION }}\Rijndael.exe" dist/
+          Copy-Item "Rijndael\bin\${{ env.BUILD_CONFIGURATION }}\AESBridge.dll" dist/
+          Copy-Item "Documentation\Readme.pdf" dist/
+          Copy-Item "Documentation\License.pdf" dist/
+          Compress-Archive -Path dist\* -DestinationPath "Rijndael-${{ github.event.inputs.tag }}-win64.zip"
+    - name: SHA256 checksum
+      shell: pwsh
+      run: |
+          Get-FileHash "Rijndael-${{ github.event.inputs.tag }}-win64.zip" -Algorithm SHA256 |
+          ForEach-Object { $_.Hash + " *Rijndael-${{ github.event.inputs.tag }}-win64.zip" } |
+          Out-File -Encoding ASCII "Rijndael-${{ github.event.inputs.tag }}-win64.zip.sha256"
+
+      # Create the GitHub Release (manual tag name)
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.event.inputs.tag }}
+        name: ${{ github.event.inputs.tag }}
+        prerelease: ${{ github.event.inputs.prerelease }}
+        files: |
+          Rijndael-${{ github.event.inputs.tag }}-win64.zip
+          Rijndael-${{ github.event.inputs.tag }}-win64.zip.sha256

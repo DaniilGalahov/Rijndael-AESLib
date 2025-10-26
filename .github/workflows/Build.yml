@@ -1,4 +1,4 @@
-name: MSBuild Rijndael-AESLib (Build & Test)
+name: Build (Build & Test)
 
 on:
   push:
