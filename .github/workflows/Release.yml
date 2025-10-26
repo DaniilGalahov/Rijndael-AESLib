@@ -24,7 +24,13 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout state
+      uses: actions/checkout@v4
+      lfs: true
+      fetch-depth: 0
+
+    - name: Pull latest LFS lfs
+      run: git lfs pull
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
