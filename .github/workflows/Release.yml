@@ -26,6 +26,7 @@ jobs:
     steps:
     - name: Checkout state
       uses: actions/checkout@v4
+      with:
         lfs: true
         fetch-depth: 0
 
