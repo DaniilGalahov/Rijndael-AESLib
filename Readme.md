@@ -132,8 +132,8 @@ This app provides core functionality of AES cryptography, especially:
 User interface of the app allows to set up source, destination and parameters of encrypting/decrypting, initialize encryption/decryption process, and receive feedback from the app.
 
 ##### UI elements
-- **Source file** field - displays and allows to input path to source file (file with data you want to encrypt). You can type the path to file by yourself or select it via GUI dialogue through *"Browse"* button near the end of the field.
-- **Destination file** field - displays and allows to input path to destination file (file where encrypted data will be saved). You can type the path to file by yourself or select it via GUI dialogue through *"Browse"* button near the end of the field.
+- **Source file** field - displays and allows to input path to source file (file with data you want to *process*). You can type the path to file by yourself or select it via GUI dialogue through *"Browse"* button near the end of the field.
+- **Destination file** field - displays and allows to input path to destination file (file where *processed* data will be saved). You can type the path to file by yourself or select it via GUI dialogue through *"Browse"* button near the end of the field.
 - **Password** field - allows to input your password (any symbols accepted).
 - **AES standard** combo box - displays selected AES standard and allows to select other available (*AES-128*, *AES-192* or *AES-256*).
 - **Encrypt** button - initializes encrytion process.
