@@ -1,7 +1,4 @@
 #include "AESABI.h"
-#include <stdlib.h>
-#include <string.h>
-#include "AESLib.h"  // Native C++ AES implementation
 
 int Encrypt
 (
@@ -24,7 +21,7 @@ int Encrypt
     {
         std::vector<unsigned char> inVec(input, input + inputSize);
         std::vector<unsigned char> keyVec(key, key + keySize);
-        auto outVec = AESLib::Encrypt(std::move(inVec), std::move(keyVec), static_cast<AESLib::Mode>(mode));
+        std::vector<unsigned char> outVec = AESLib::Encrypt(std::move(inVec), std::move(keyVec), static_cast<AESLib::Mode>(mode));
 
         *outputSize = outVec.size();
         *output = (uint8_t*)malloc(*outputSize);
@@ -61,13 +58,46 @@ int Decrypt
     {
         std::vector<unsigned char> inVec(input, input + inputSize);
         std::vector<unsigned char> keyVec(key, key + keySize);
-        auto outVec = AESLib::Decrypt(std::move(inVec), std::move(keyVec), static_cast<AESLib::Mode>(mode));
+        std::vector<unsigned char> outVec = AESLib::Decrypt(std::move(inVec), std::move(keyVec), static_cast<AESLib::Mode>(mode));
 
         *outputSize = outVec.size();
         *output = (uint8_t*)malloc(*outputSize);
         if (!*output) return -2;
 
         memcpy(*output, outVec.data(), *outputSize);
+    }
+    catch (...)
+    {
+        result = -3;
+    }
+
+    return result;
+}
+
+int Hash
+(
+    const uint8_t* input,
+    size_t inputSize,
+    uint8_t** output,
+    size_t* outputSize
+)
+{
+    if (!input || !output || !outputSize) return -1;
+
+    *output = NULL;
+    *outputSize = 0;
+
+    int result = 0;
+    try
+    {
+        std::vector<unsigned char> inVec(input, input + inputSize);
+        array<uint32_t, 8> outArray = SHA256::Hash(std::move(inVec));
+
+        *outputSize = sizeof(outArray);
+        *output = (uint8_t*)malloc(*outputSize);
+        if (!*output) return -2;
+
+        memcpy(*output, outArray.data(), *outputSize);
     }
     catch (...)
     {

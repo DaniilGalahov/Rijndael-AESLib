@@ -1,6 +1,10 @@
 #pragma once
 #include <stdint.h>
+#include <stdlib.h>
 #include <stddef.h>
+#include <array>
+#include "AESLib.h"
+#include "SHA256.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,6 +41,15 @@ extern "C" {
         const uint8_t* key,
         size_t keySize,
         AESMode mode,
+        uint8_t** output,
+        size_t* outputSize
+    );
+
+    //Calculated SHA256 hash
+    int Hash
+    (
+        const uint8_t* input,
+        size_t inputSize,
         uint8_t** output,
         size_t* outputSize
     );
