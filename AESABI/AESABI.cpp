@@ -11,7 +11,10 @@ int Encrypt
     size_t* outputSize
 )
 {
-    if (!input || !key || !output || !outputSize) return -1;
+    if (!input || !key || !output || !outputSize)
+    {
+        return -1;
+    }
 
     *output = NULL;
     *outputSize = 0;
@@ -25,7 +28,10 @@ int Encrypt
 
         *outputSize = outVec.size();
         *output = (uint8_t*)malloc(*outputSize);
-        if (!*output) return -2;
+        if (!*output)
+        {
+            return -2;
+        }
 
         memcpy(*output, outVec.data(), *outputSize);
     }
@@ -48,7 +54,10 @@ int Decrypt
     size_t* outputSize
 )
 {
-    if (!input || !key || !output || !outputSize) return -1;
+    if (!input || !key || !output || !outputSize)
+    {
+        return -1;
+    }
 
     *output = NULL;
     *outputSize = 0;
@@ -62,7 +71,10 @@ int Decrypt
 
         *outputSize = outVec.size();
         *output = (uint8_t*)malloc(*outputSize);
-        if (!*output) return -2;
+        if (!*output)
+        {
+            return -2;
+        }
 
         memcpy(*output, outVec.data(), *outputSize);
     }
@@ -82,7 +94,10 @@ int Hash
     size_t* outputSize
 )
 {
-    if (!input || !output || !outputSize) return -1;
+    if (!input || !output || !outputSize)
+    {
+        return -1;
+    }
 
     *output = NULL;
     *outputSize = 0;
@@ -95,7 +110,10 @@ int Hash
 
         *outputSize = sizeof(outArray);
         *output = (uint8_t*)malloc(*outputSize);
-        if (!*output) return -2;
+        if (!*output)
+        {
+            return -2;
+        }
 
         memcpy(*output, outArray.data(), *outputSize);
     }
