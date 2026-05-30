@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "AESLib.h"
 
 namespace AESBridge {
