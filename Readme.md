@@ -244,7 +244,7 @@ Then, use this helper functions to encrypt and decrypt data.
 
 **Important!** Always use `aes_dll.FreeBuffer()` to free memory buffer after usage of `aes_dll.Encrypt()` and `aes_dll.Decrypt()` *exactly* as it shown above to avoid memory leaks.
 
-Full source code of Python example you may find in file [Python/example.py`](https://github.com/DaniilGalahov/Rijndael-AESLib/blob/master/Python/example.py).
+Full source code of Python example you may find in file [Python/example.py](https://github.com/DaniilGalahov/Rijndael-AESLib/blob/master/Python/example.py).
 
 ---
 ## Questions
