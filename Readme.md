@@ -11,7 +11,7 @@ This repository includes:
 - C ABI .dll for usage C++ AES implementation with any managed language (Java, Python, TypeScript, anything).
 
 ## Usage
-This section separated to two subsections - usage of [Rijndael](#Rijndael_usage) app and usage of [AESLib](#AESLib_usage).
+This section separated to two subsections - usage of [Rijndael](#Rijndael_usage) app and usage of [C++ AES framework](#AES_development).
 
 ---
 <a id="Rijndael_usage"></a>
@@ -50,8 +50,8 @@ User interface of the app allows to set up source, destination and parameters of
 *Notice: system does not touch any info in source file (read-only access), and does not allow to overwrite destination file.*
 
 ---
-<a id="AESLib_usage"></a>
-### AESLib
+<a id="AES_development"></a>
+### C++ AES framework
 
 #### Purpose
 This library provides open-source, independent and fully-tested (code coverage by tests ~90%) implementation of AES, "closely following the textbook". Feel free to use it in your own projects (of course, following [License](/License.md) terms).
