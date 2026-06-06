@@ -2,7 +2,8 @@
 #include <vector>
 #include "AESLib.h"
 
-namespace AESBridge {
+namespace AESBridge
+{
 	public enum class Mode : int
 	{
 		AES128 = 0,
@@ -10,7 +11,7 @@ namespace AESBridge {
 		AES256 = 2
 	};
 
-	public ref class AES sealed
+	public ref class AESNative sealed
 	{
 	public:
 		static cli::array<System::Byte>^ Encrypt(cli::array<System::Byte>^ openData, cli::array<System::Byte>^ userKey, Mode mode);

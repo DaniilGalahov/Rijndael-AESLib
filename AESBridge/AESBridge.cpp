@@ -26,7 +26,7 @@ namespace
     }
 }
 
-cli::array<System::Byte>^ AESBridge::AES::Encrypt
+cli::array<System::Byte>^ AESBridge::AESNative::Encrypt
 (
     cli::array<System::Byte>^ openData,
     cli::array<System::Byte>^ userKey,
@@ -50,7 +50,7 @@ cli::array<System::Byte>^ AESBridge::AES::Encrypt
     }
 }
 
-cli::array<System::Byte>^ AESBridge::AES::Decrypt
+cli::array<System::Byte>^ AESBridge::AESNative::Decrypt
 (
     cli::array<System::Byte>^ encryptedData,
     cli::array<System::Byte>^ userKey,

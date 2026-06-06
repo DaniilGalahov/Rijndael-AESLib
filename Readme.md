@@ -141,14 +141,14 @@ using AESBridge;
 	Byte[] openData = yourData; //open data as array of bytes (loaded from file, stream, etc.)
 	Byte[] userKey = yourKey; //user-provided key as array of bytes
 	Mode mode = Mode.AES128; //encrypting mode (AES128, AES192, AES256 available)
-	Byte[] encryptedData = AES.Encrypt(openData, userKey, mode); //encrypt your data with provided key using given AES mode and return array of bytes (encrypted data).
+	Byte[] encryptedData = AESNative.Encrypt(openData, userKey, mode); //encrypt your data with provided key using given AES mode and return array of bytes (encrypted data).
 ```
 3. To decrypt data
 ``` c#
 	Byte[] encryptedData = yourData; //encrypted data as array of bytes (loaded from file, stream, etc.)
 	Byte[] userKey = yourKey; //user-provided key as array of bytes
 	Mode mode = Mode.AES128; //encrypting mode (AES128, AES192, AES256 available)
-	Byte[] openData = AES.Decrypt(encryptedData, userKey, mode); //decrypt your encrypted data using provided key and given AES mode, and return array of bytes (decrypted data).
+	Byte[] openData = AESNative.Decrypt(encryptedData, userKey, mode); //decrypt your encrypted data using provided key and given AES mode, and return array of bytes (decrypted data).
 ```
 
 ##### Python

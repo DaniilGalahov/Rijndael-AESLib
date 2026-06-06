@@ -11,7 +11,7 @@ namespace Rijndael
         public Form1()
         {
             InitializeComponent();
-            toolTip.SetToolTip(textBoxPassword, "min 7, max 32 symbols");
+            toolTip.SetToolTip(textBoxPassword, "min 8 symbols");
         }
 
         private void buttonSelectSourceFile_Click(object sender, EventArgs e)
@@ -79,7 +79,7 @@ namespace Rijndael
                 return false;
             }
 
-            if(textBoxPassword.Text.Length < 7)
+            if(textBoxPassword.Text.Length < 8)
             {
                 labelStatus.Text = "Password too short";
                 return false;
@@ -119,7 +119,7 @@ namespace Rijndael
             Byte[] openData = File.ReadAllBytes(textBoxSourceFilePath.Text);
             Byte[] userKey = Encoding.UTF8.GetBytes(textBoxPassword.Text);
             Mode mode = (Mode)comboBoxEncryptionStandard.SelectedIndex;
-            Byte[] encryptedData = AES.Encrypt(openData, userKey, mode);
+            Byte[] encryptedData = AESNative.Encrypt(openData, userKey, mode);
             File.WriteAllBytes(textBoxDestinationFilePath.Text, encryptedData);
 
             labelStatus.Text = "Encryption finished";
@@ -136,7 +136,7 @@ namespace Rijndael
             Byte[] encryptedData = File.ReadAllBytes(textBoxSourceFilePath.Text);
             Byte[] userKey = Encoding.UTF8.GetBytes(textBoxPassword.Text);
             Mode mode = (Mode)comboBoxEncryptionStandard.SelectedIndex;
-            Byte[] openData = AES.Decrypt(encryptedData, userKey, mode);
+            Byte[] openData = AESNative.Decrypt(encryptedData, userKey, mode);
             File.WriteAllBytes(textBoxDestinationFilePath.Text, openData);
 
             labelStatus.Text = "Decryption finished";
